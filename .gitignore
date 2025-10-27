@@ -1,0 +1,31 @@
+# Compilación
+build/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+
+# Binarios
+*.o
+*.so
+*.a
+*.out
+*.exe
+
+# Archivos temporales
+*.log
+*.tmp
+*.swp
+*.bak
+*.dSYM/
+
+# Archivos de IDEs
+.vscode/
+.idea/
+*.user
+*.pro.user
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
