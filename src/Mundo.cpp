@@ -39,10 +39,14 @@ void Mundo::Init() {
 	for(int i=0;i<40;i++)
 		xxx+=3*cos(0.0125f*i*3)*0.025;
 		cout<<xxx<<endl;*/
-	cout<<"Introduce las filas: "<<endl;
-	cin>>filas;
-	cout<<"Introduce las columnas: "<<endl;
-	cin>>columnas;
+	while(filas <= 0) {
+		cout<<"Introduce las filas: "<<endl;
+		cin>>filas;
+	}
+	while(columnas <= 0) {
+		cout<<"Introduce las columnas: "<<endl;
+		cin>>columnas;
+	}
 	pox=(calleaux->getLong())/2*(columnas-1);
 	poy=(calleaux->getLong())/2*(filas-1);
 	poz=(pox>poy ? ((pox+(2*(calleaux->getLong())))/tan(PI/6)):((poy+(3*(calleaux->getLong())))/tan(PI/6)));
@@ -100,13 +104,9 @@ void Mundo::Init() {
 		break;
 		case 2:	//general/green wave
 			cout<<"\ninicializa grafoGsem";
-			//G2.crearGrafo(filas,columnas,calles,semaforos,true);	//cambiar mirar si se puede poner un constructor copia
-			//Gsem=new grafo;
-			cout<<"\nle mete valor a Gsem";
-			cout<<"\ncosas";
-			//Gsem=new grafo[1];
-			//Gsem[0].crearGrafo(G2);	//cambiar aqui peta
-			cout<<"\nSe ha creado el grafo para la green wave";
+			Gsem = new grafo[1];
+			Gsem->crearGrafo(filas, columnas, calles, semaforos,true);
+			cout<<"\nSe ha creado el grafo para la green wave"<<endl;
 		break;
 		default:
 			cout<<"\n\nEl valor introducido es erróneo, vuelva a elegir: ";
@@ -241,6 +241,7 @@ void Mundo::OnTimer() {
 	if(!editor::getEnable()){//cambiar quitar esto
 	coches.mueve(t);
 	interaccion::OnTimerSem(calles,coches,semaforos,optSem,Gsem);
+	cout << "prueba"<<endl;
 		interaccion::cruce(coches,semaforos,calles,pg,&tiempo,iteraciones,filas,columnas,optRuta);
 	interaccion::salirMundo(coches, filas, columnas, calles.getLong());
 	interaccion::parcheSetDir(coches,calles);	//antes de distSeg porque se cambia el stop

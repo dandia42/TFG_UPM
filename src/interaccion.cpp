@@ -2106,7 +2106,7 @@ void interaccion::temporal(double* tinicio,double* tfin,double* tiempo,int itera
 		ngirosmedio=ngirosmedio/i;
 		talgmedio=talgmedio/i;
 		tiempototal=(double)(clock()/CLOCKS_PER_SEC);
-		cout<<"\n\n ***************************************************************************\n ********************\tTiempo medio: "<<tiempomedio<<" segundos\t********************\n ********************\tTiempo total: "<<tiempototal<<" segundos\t********************\n\n ********************\tTiempo medio alg: "<<talgmedio<<" segundos\t********************\n\n ********************\tNumero giros medio: "<<ngirosmedio<<" giros\t********************\n ********************\tSe han completado: "<<i<<" rutas\t********************\n ******************** FIN DE LA SIMULACION *********************************** \n";
+		cout<< dec << "\n\n ***************************************************************************\n ********************\tTiempo medio: "<<tiempomedio<<" segundos\t********************\n ********************\tTiempo total: "<<tiempototal<<" segundos\t********************\n\n ********************\tTiempo medio alg: "<<talgmedio<<" segundos\t********************\n\n ********************\tNumero giros medio: "<<ngirosmedio<<" giros\t********************\n ********************\tSe han completado: "<<i<<" rutas\t********************\n ******************** FIN DE LA SIMULACION *********************************** \n";
 		int aux;
 		cin>>aux;
 	}
@@ -2259,7 +2259,7 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 				Gsem->calcularPesoSem(lca,lco,s,ind);
 			break;
 			case 2:	//optimizacion general
-				
+				cout << "\nOnTimerSem caso opt 2, tiempos iguales" << endl;
 			break;
 			default:
 				cout<<"\nERROR SELECCIÓN OPTIMIZACIÓN SEMÁFOROS 0";
@@ -2276,7 +2276,7 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 				Gsem->calcularPesoSem(lca,lco,s,ind);
 			break;
 			case 2:	//optimizacion general
-				
+				cout << "\nOnTimerSem caso opt 2, mas tiempo horizontal" << endl;
 			break;
 			default:
 				cout<<"\nERROR SELECCIÓN OPTIMIZACIÓN SEMÁFOROS 1";
@@ -2293,7 +2293,7 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 				Gsem->calcularPesoSem(lca,lco,s,ind);
 			break;
 			case 2:	//optimizacion general
-				
+				cout << "\nOnTimerSem caso opt 2, mas tiempo vertical" << endl;
 			break;
 			default:
 				cout<<"\nERROR SELECCIÓN OPTIMIZACIÓN SEMÁFOROS 2";
@@ -2314,7 +2314,7 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 	}
 	Gsem->setTempaux(Gsem->getTempaux()+1);
 	s->maquinaEstados();
-		
+	cout << "sale de OnTimerSem" << endl;
 }
 ///////////////////////////////
 
@@ -2408,11 +2408,6 @@ int interaccion::mascara(Coche* c, Semaforo* s, float dist){
 	//if(numdec>500)	
 	//cout << "  " << numdec << "  ";
 	return numdec;
-	
-	
-	
-	
-
 }
 
 

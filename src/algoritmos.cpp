@@ -181,6 +181,16 @@ void Algoritmo::greenWave(grafo* G){	//ciclo en el que aplicar el algoritmo
 	
 	funcionAux(ini2,ini3,G,n2,r2);
 	funcionAux(ini3,ini1,G,n3,r3);
+	cout << "\n\t\tRuta 1: " << endl;
+	for (int i=0;i<n1;i++)
+		cout << r1[i] << " ";
+	cout << "\n\t\tRuta 2: " << endl;
+	for (int i=0;i<n2;i++)
+		cout << r2[i] << " ";
+	cout << "\n\t\tRuta 3: " << endl;
+	for (int i=0;i<n3;i++)
+		cout << r3[i] << " ";
+		
 	cin>>n1;//borrar esto cuando se compruebe que esta bien
 	
 	/*

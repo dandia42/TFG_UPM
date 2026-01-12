@@ -35,11 +35,11 @@ public:
 	void OnDraw();
 	void crearmatriz(int i, int j);
 	
-	int filas, columnas;
+	int filas = -1, columnas = -1;
 	int flag=0;
-	int pox,poy;
+	int pox=0,poy=0;
 	int optRuta=-1, optSem=-1;
-	float poz;
+	float poz=0;
 	int iteraciones=0, *piteraciones=&iteraciones;
 	
 	double tiempo;
