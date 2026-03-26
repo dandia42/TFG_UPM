@@ -295,13 +295,3 @@ bool editor::alcanzarExtremo(int i, listaCoches lco, listaCalles lca, listaSemaf
 
 
 
-
-
-
-
-
-
-
-
-
-

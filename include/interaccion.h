@@ -12,6 +12,7 @@ public:
 //comportamiento del semaforo con el grafo
 	static void OnTimerSem(listaCalles&,listaCoches&,listaSemaforos, int, grafo*);
 	static void OnTimerSem(listaCalles&,listaCoches&,Semaforo*,int, grafo*, bool,int);
+	static void OnTimerSem(listaCalles&,Semaforo*);
 //crear coches de forma aleatoria en las calles	
 	static void crearcoche(listaCoches*, listaCalles);
 	static void crearcoche(Calle*, listaCoches*);

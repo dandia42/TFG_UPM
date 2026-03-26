@@ -501,15 +501,3 @@ void grafo::calcularPesoSem(listaCalles& lca, listaCoches& lco, Semaforo* s, int
 //////////////////////////////////////////
 
 
-
-
-
-
-
-
-
-
-
-
-
-

@@ -464,9 +464,3 @@ void Coche::changeStop(int x){
 }
 
 
-
-
-
-
-
-

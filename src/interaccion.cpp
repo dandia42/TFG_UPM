@@ -29,7 +29,7 @@ void interaccion::cruce(listaCoches lco, int indexc, listaSemaforos ls, int inde
 	float dist=aux.modulo();
 	int masc=mascara(c,s,dist);
 	if(!lco.lco[indexc]->flagdebug){
-		cout << "\nEl coche " << indexc << " tiene el caso: " << hex << masc << endl;
+		cout << "\nEl coche " << indexc << " tiene el caso: " << hex << masc << dec << endl;
 		lco.lco[indexc]->flagdebug=true;
 	}
 	if(c->flagsem==false){
@@ -525,590 +525,6 @@ void interaccion::cruce(listaCoches lco, int indexc, listaSemaforos ls, int inde
 				cout << "\nSe cambia giro de coche: " << indexc << " de " << c->getGiro() << " a 1" << endl;
 				c->setGiro(1);
 			break;
-
-		/*case 0x010:	////X1
-		case 0x012:
-		case 0x014:
-		case 0x016:
-		case 0x018:
-		case 0x01A:
-		case 0x01C:
-		case 0x01E:
-		case 0x210:	////X3
-		case 0x212:
-		case 0x214:
-		case 0x216:
-		case 0x218:
-		case 0x21A:
-		case 0x21C:
-		case 0x21E:
-			carrilesdisp(s->caf[3],c->giro,c->dir);
-		break;
-		case 0x482:	////X1
-		case 0x486:
-		case 0x48A:
-		case 0x48E:
-		case 0x492:
-		case 0x496:
-		case 0x49A:
-		case 0x49E:	
-		case 0x682:	////X3
-		case 0x686:
-		case 0x68A:
-		case 0x68E:
-		case 0x692:
-		case 0x696:
-		case 0x69A:
-		case 0x69E:	//COTA MENOR
-			carrilesdisp(s->caf[0],c->giro,c->dir);
-		break;
-		case 0x104:	////X1
-		case 0x106:
-		case 0x10C:
-		case 0x10E:
-		case 0x114:
-		case 0x116:
-		case 0x11C:
-		case 0x11E:
-		case 0x304:	////X3
-		case 0x306:
-		case 0x30C:
-		case 0x30E:
-		case 0x314:
-		case 0x316:
-		case 0x31C:
-		case 0x31E:
-			carrilesdisp(s->caf[1],c->giro,c->dir);
-		break;
-		case 0x588:	////X1
-		case 0x58A:
-		case 0x58C:
-		case 0x58E:
-		case 0x598:
-		case 0x59A:
-		case 0x59C:
-		case 0x59E:	
-		case 0x788:	////X3
-		case 0x78A:
-		case 0x78C:
-		case 0x78E:
-		case 0x798:
-		case 0x79A:
-		case 0x79C:
-		case 0x79E:	//COTA MAYOR GIRO IZQUIERDA X1 ANTES DE LLEGAR
-			carrilesdisp(s->caf[2],c->giro,c->dir);
-		break;
-		case 0x011:	////
-		case 0x013:
-		case 0x015:
-		case 0x017:
-		case 0x019:
-		case 0x01B:
-		case 0x01D:
-		case 0x01F:
-		case 0x483:
-		case 0x487:
-		case 0x48B:
-		case 0x48F:
-		case 0x493:
-		case 0x497:
-		case 0x49B:
-		case 0x49F:	//COTA MENOR
-		case 0x105:
-		case 0x107:
-		case 0x10D:
-		case 0x10F:
-		case 0x115:
-		case 0x117:
-		case 0x11D:
-		case 0x11F:
-		case 0x589:
-		case 0x58B:
-		case 0x58D:
-		case 0x58F:
-		case 0x599:
-		case 0x59B:
-		case 0x59D:
-		case 0x59F:	//COTA MAYOR GIRO IZQUIERDA X1 DESPUES DE LLEGAR
-		case 0x045:	////
-		case 0x047:
-		case 0x04D:
-		case 0x04F:
-		case 0x055:
-		case 0x057:
-		case 0x05D:
-		case 0x05F:	
-		case 0x4C9:
-		case 0x4CB:
-		case 0x4CD:
-		case 0x4CF:
-		case 0x4D9:
-		case 0x4DB:
-		case 0x4DD:
-		case 0x4DF:	//COTA MENOR
-		case 0x151:
-		case 0x153:
-		case 0x155:
-		case 0x157:
-		case 0x159:
-		case 0x15B:
-		case 0x15D:
-		case 0x15F:	
-		case 0x5C3:
-		case 0x5C7:
-		case 0x5CB:
-		case 0x5CF:
-		case 0x5D3:
-		case 0x5D7:
-		case 0x5DB:
-		case 0x5DF:	//COTA MAYOR GIRO DERECHA X1 DESPUES DE LLEGAR
-		case 0x211:	////
-		case 0x213:
-		case 0x215:
-		case 0x217:
-		case 0x219:
-		case 0x21B:
-		case 0x21D:
-		case 0x21F:
-		case 0x683:
-		case 0x687:
-		case 0x68B:
-		case 0x68F:
-		case 0x693:
-		case 0x697:
-		case 0x69B:
-		case 0x69F:	//COTA MENOR
-		case 0x305:
-		case 0x307:
-		case 0x30D:
-		case 0x30F:
-		case 0x315:
-		case 0x317:
-		case 0x31D:
-		case 0x31F:
-		case 0x789:
-		case 0x78B:
-		case 0x78D:
-		case 0x78F:
-		case 0x799:
-		case 0x79B:
-		case 0x79D:
-		case 0x79F:	//COTA MAYOR GIRO IZQUIERDA X3 DESPUES DE LLEGAR
-		case 0x245:	////
-		case 0x247:
-		case 0x24D:
-		case 0x24F:
-		case 0x255:
-		case 0x257:
-		case 0x25D:
-		case 0x25F:	
-		case 0x6C9:
-		case 0x6CB:
-		case 0x6CD:
-		case 0x6CF:
-		case 0x6D9:
-		case 0x6DB:
-		case 0x6DD:
-		case 0x6DF:	//COTA MENOR
-		case 0x351:
-		case 0x353:
-		case 0x355:
-		case 0x357:
-		case 0x359:
-		case 0x35B:
-		case 0x35D:
-		case 0x35F:	
-		case 0x7C3:
-		case 0x7C7:
-		case 0x7CB:
-		case 0x7CF:
-		case 0x7D3:
-		case 0x7D7:
-		case 0x7DB:
-		case 0x7FF:	//COTA MAYOR GIRO DERECHA X3 DESPUES DE LLEGAR
-			c->girar();
-		break;
-		case 0x022:	////X1
-		case 0x026:
-		case 0x02A:
-		case 0x02E:
-		case 0x032:
-		case 0x036:
-		case 0x03A:
-		case 0x03E:
-		case 0x4A4:
-		case 0x4A6:
-		case 0x4AC:
-		case 0x4AE:
-		case 0x4B4:
-		case 0x4B6:
-		case 0x4BC:
-		case 0x4BE:
-		case 0x128:
-		case 0x12A:
-		case 0x12C:
-		case 0x12E:
-		case 0x138:
-		case 0x13A:
-		case 0x13C:
-		case 0x13E:
-		case 0x5B0:
-		case 0x5B2:
-		case 0x5B4:
-		case 0x5B6:
-		case 0x5B8:
-		case 0x5BA:
-		case 0x5BC:
-		case 0x5BE:	//SEGUIR RECTO X1
-		case 0x222:	////X3
-		case 0x226:
-		case 0x22A:
-		case 0x22E:
-		case 0x232:
-		case 0x236:
-		case 0x23A:
-		case 0x23E:
-		case 0x6A4:
-		case 0x6A6:
-		case 0x6AC:
-		case 0x6AE:
-		case 0x6B4:
-		case 0x6B6:
-		case 0x6BC:
-		case 0x6BE:
-		case 0x328:
-		case 0x32A:
-		case 0x32C:
-		case 0x32E:
-		case 0x338:
-		case 0x33A:
-		case 0x33C:
-		case 0x33E:
-		case 0x7B0:
-		case 0x7B2:
-		case 0x7B4:
-		case 0x7B6:
-		case 0x7B8:
-		case 0x7BA:
-		case 0x7BC:
-		case 0x7BE:
-			cambiarCarril(c, s->caf, s->getPos());
-		break;
-		case 0x044:	////X1
-		case 0x046:
-		case 0x04C:
-		case 0x04E:
-		case 0x054:
-		case 0x056:
-		case 0x05C:
-		case 0x05E:
-		case 0x244:	////X3
-		case 0x246:
-		case 0x24C:
-		case 0x24E:
-		case 0x254:
-		case 0x256:
-		case 0x25C:
-		case 0x25E:
-			carrilesdisp(s->caf[1],c->giro,c->dir);
-		break;
-		case 0x4C8:	////X1
-		case 0x4CA:
-		case 0x4CC:
-		case 0x4CE:
-		case 0x4D8:
-		case 0x4DA:
-		case 0x4DC:
-		case 0x4DE:	
-		case 0x6C8:	////X3
-		case 0x6CA:
-		case 0x6CC:
-		case 0x6CE:
-		case 0x6D8:
-		case 0x6DA:
-		case 0x6DC:
-		case 0x6DE://COTA MENOR
-			carrilesdisp(s->caf[2],c->giro,c->dir);
-		break;
-		case 0x150:	////X1
-		case 0x152:
-		case 0x154:
-		case 0x156:
-		case 0x158:
-		case 0x15A:
-		case 0x15C:
-		case 0x15E:
-		case 0x350:	////X3
-		case 0x352:
-		case 0x354:
-		case 0x356:
-		case 0x358:
-		case 0x35A:
-		case 0x35C:
-		case 0x35E:
-			carrilesdisp(s->caf[3],c->giro,c->dir);
-		break;
-		case 0x5C2:	////X1
-		case 0x5C6:
-		case 0x5CA:
-		case 0x5CE:
-		case 0x5D2:
-		case 0x5D6:
-		case 0x5DA:
-		case 0x5DE:	
-		case 0x7C2:	////X3
-		case 0x7C6:
-		case 0x7CA:
-		case 0x7CE:
-		case 0x7D2:
-		case 0x7D6:
-		case 0x7DA:
-		case 0x7DE://COTA MAYOR GIRO DERECHA X1 ANTES DE LLEGAR
-			carrilesdisp(s->caf[0],c->giro,c->dir);
-		break;
-/*		case 0x002:	////X1
-		case 0x003:
-		case 0x006:
-		case 0x007:
-		case 0x00A:
-		case 0x00B:
-		case 0x00E:
-		case 0x00F:
-		case 0x042:
-		case 0x043:
-		case 0x04A:
-		case 0x04B:
-		case 0x052:
-		case 0x053:
-		case 0x05A:
-		case 0x05B:
-		case 0x484:
-		case 0x485:
-		case 0x48C:
-		case 0x48D:
-		case 0x494:
-		case 0x495:
-		case 0x49C:
-		case 0x49D:
-		case 0x4C4:
-		case 0x4C5:
-		case 0x4C6:
-		case 0x4C7:
-		case 0x4D4:
-		case 0x4D5:
-		case 0x4D6:
-		case 0x4D7:
-		case 0x108:
-		case 0x109:
-		case 0x10A:
-		case 0x10B:
-		case 0x118:
-		case 0x119:
-		case 0x11A:
-		case 0x11B:
-		case 0x148:
-		case 0x149:
-		case 0x14A:
-		case 0x14B:
-		case 0x14C:
-		case 0x14D:
-		case 0x14E:
-		case 0x14F:
-		case 0x590:
-		case 0x591:
-		case 0x592:
-		case 0x593:
-		case 0x594:
-		case 0x595:
-		case 0x596:
-		case 0x597:
-		case 0x5D0:
-		case 0x5D1:
-		case 0x5D4:
-		case 0x5D5:
-		case 0x5D8:
-		case 0x5D9:
-		case 0x5DC:
-		case 0x5DD:	//CAMBIAR GIRO A RECTO
-		case 0x202:	////X3
-		case 0x203:
-		case 0x206:
-		case 0x207:
-		case 0x20A:
-		case 0x20B:
-		case 0x20E:
-		case 0x20F:
-		case 0x242:
-		case 0x243:
-		case 0x24A:
-		case 0x24B:
-		case 0x252:
-		case 0x253:
-		case 0x25A:
-		case 0x25B:
-		case 0x684:
-		case 0x685:
-		case 0x68C:
-		case 0x68D:
-		case 0x694:
-		case 0x695:
-		case 0x69C:
-		case 0x69D:
-		case 0x6C4:
-		case 0x6C5:
-		case 0x6C6:
-		case 0x6C7:
-		case 0x6D4:
-		case 0x6D5:
-		case 0x6D6:
-		case 0x6D7:
-		case 0x308:
-		case 0x309:
-		case 0x30A:
-		case 0x30B:
-		case 0x318:
-		case 0x319:
-		case 0x31A:
-		case 0x31B:
-		case 0x348:
-		case 0x349:
-		case 0x34A:
-		case 0x34B:
-		case 0x34C:
-		case 0x34D:
-		case 0x34E:
-		case 0x34F:
-		case 0x790:
-		case 0x791:
-		case 0x792:
-		case 0x793:
-		case 0x794:
-		case 0x795:
-		case 0x796:
-		case 0x797:
-		case 0x7D0:
-		case 0x7D1:
-		case 0x7D4:
-		case 0x7D5:
-		case 0x7D8:
-		case 0x7D9:
-		case 0x7DC:
-		case 0x7DD:
-			c->setGiro(0);
-		break;
-		case 0x030:	////X1
-		//case 0x034:
-		case 0x038:
-		//case 0x03C:
-		case 0x4A2:
-		//case 0x4AA:
-		case 0x4B2:
-		//case 0x4BA:
-		case 0x124:
-		case 0x126:
-		//case 0x134:
-		//case 0x136:
-		case 0x5A8:
-		//case 0x5AA:
-		case 0x5AC:
-		//case 0x5AE:	
-		case 0x230:	////X3
-		//case 0x234:
-		case 0x238:
-		//case 0x23C:
-		case 0x6A2:
-		//case 0x6AA:
-		case 0x6B2:
-		//case 0x6BA:
-		case 0x324:
-		case 0x326:
-		//case 0x334:
-		//case 0x336:
-		case 0x7A8:
-		//case 0x7AA:
-		case 0x7AC:
-		//case 0x7AE://CAMBIAR GIRO A IZQUIERDA	SE PRIORIZA EL GIRO A DERECHA
-			if (auxrand)
-				c->setGiro(-1);
-			else
-				c->setGiro(1);
-			auxn++;
-			cout << "\n////////////////Ahora el coche " << indexc << " tiene el giro " << c->getGiro()<<" se han hecho "<<auxn<<" cambios";
-		break;
-		case 0x024:	////X1
-		case 0x02C:
-		case 0x034:
-		case 0x03C:
-		case 0x4A8:
-		case 0x4AA:
-		case 0x4B8:
-		case 0x4BA:
-		case 0x130:
-		case 0x132:
-		case 0x134:
-		case 0x136:
-		case 0x5A2:
-		case 0x5A6:
-		case 0x5AA:
-		case 0x5AE:	
-		case 0x224:	////X3
-		case 0x22C:
-		case 0x234:
-		case 0x23C:
-		case 0x6A8:
-		case 0x6AA:
-		case 0x6B8:
-		case 0x6BA:
-		case 0x330:
-		case 0x332:
-		case 0x334:
-		case 0x336:
-		case 0x7A2:
-		case 0x7A6:
-		case 0x7AA:
-		case 0x7AE:	//CAMBIAR GIRO A DERECHA
-			c->setGiro(1);
-		break;*/
-		/*
-
-
-		case 0x002:
-		case 0x003:
-		case 0x006:
-		case 0x007:
-		case 0x042:
-		case 0x043:
-		case 0x052:
-		case 0x053:
-		case 0x084:
-		case 0x085:
-		case 0x08C:
-		case 0x08D:
-		case 0x0C4:
-		case 0x0C5:
-		case 0x0C6:
-		case 0x0C7:
-		case 0x008:
-		case 0x009:
-		case 0x018:
-		case 0x019:
-		case 0x048:
-		case 0x049:
-		case 0x04C:
-		case 0x04D:
-		case 0x090:
-		case 0x091:
-		case 0x092:
-		case 0x093:
-		case 0x0D0:
-		case 0x0D1:
-		case 0x0D8:
-		case 0x0D9:
-
-		case 0x102:
-		case 0x103:
-		case 0x106:
-		case 0x107:*/
 		}
 		
 		if(masc>=0x800){	//area grande ambar
@@ -2106,7 +1522,7 @@ void interaccion::temporal(double* tinicio,double* tfin,double* tiempo,int itera
 		ngirosmedio=ngirosmedio/i;
 		talgmedio=talgmedio/i;
 		tiempototal=(double)(clock()/CLOCKS_PER_SEC);
-		cout<< dec << "\n\n ***************************************************************************\n ********************\tTiempo medio: "<<tiempomedio<<" segundos\t********************\n ********************\tTiempo total: "<<tiempototal<<" segundos\t********************\n\n ********************\tTiempo medio alg: "<<talgmedio<<" segundos\t********************\n\n ********************\tNumero giros medio: "<<ngirosmedio<<" giros\t********************\n ********************\tSe han completado: "<<i<<" rutas\t********************\n ******************** FIN DE LA SIMULACION *********************************** \n";
+		cout << "\n\n ***************************************************************************\n ********************\tTiempo medio: "<<tiempomedio<<" segundos\t********************\n ********************\tTiempo total: "<<tiempototal<<" segundos\t********************\n\n ********************\tTiempo medio alg: "<<talgmedio<<" segundos\t********************\n\n ********************\tNumero giros medio: "<<ngirosmedio<<" giros\t********************\n ********************\tSe han completado: "<<i<<" rutas\t********************\n ******************** FIN DE LA SIMULACION *********************************** \n";
 		int aux;
 		cin>>aux;
 	}
@@ -2241,25 +1657,49 @@ int interaccion::getCalleindex(Coche* co, listaCalles lca){
 //////////////////////////////////////////////////////////////////////
 
 /*Comportamiento del semaforo*/
+int getRC(grafo* G, int* r,int n){
+	DOUT << "\n\tSe calculan tiempos de semaforo segun longitud de calle (TODO)" << endl;
+	/*for(int i=0;i<n;i++){
+		G->getArista
+	}*/
+}
+
 void interaccion::OnTimerSem(listaCalles& lca,listaCoches& lco, listaSemaforos ls, int opt, grafo* Gsem){
+	DOUT << "\n\t[DEBUG] - Entra en OnTimerSem general" << endl;
 	static bool flagaux=false;
+	if(!flagaux && opt == 2){
+		DOUT << "\nVa a calcularse la ruta ciclica para green wave" << endl;
+		int *rsem, *rc, n=-1;
+		Algoritmo::greenWave(Gsem, rsem, n);
+		DOUT << "\nRuta green wave terminada" << endl;
+		// Se calculan tiempos de semaforos segun longitud de calle
+		for(int i=0; i < n; i++){
+			rc[i]=getRC(Gsem,rsem,n);
+			OnTimerSem(lca, ls.ls[i]);
+		}
+	}
 	for(int i=0;i<ls.numero;i++)
 		OnTimerSem(lca,lco,ls.ls[i],opt,&Gsem[i],flagaux,i);
 	flagaux=true;	//para que la asignacion de tiempos en los casos 1 y 2 solo se haga una vez
+
+	DOUT << "\n\t[DEBUG] - Sale de OnTimerSem general" << endl;
 }
 void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, int opt, grafo* Gsem, bool flagaux, int ind){
+	DOUT << "\n\t[DEBUG] - Entra en OnTimerSem especifico " << ind << endl;
 	if(Gsem->getTempaux()>(10*40)){	//cada 0.25s
 		switch(s->getEstadoLuces()){
 		case 0:	//caso normal con todos los tiempos iguales
 			switch(opt){
 			case 0:	//caso normal 
+				DOUT << "\nOnTimerSem caso opt 0, tiempos iguales" << endl;
 				//los tiempos que se han generado al inicio
 			break;
 			case 1:	//optimizacion local
+				DOUT << "\nOnTimerSem caso opt 1, tiempos iguales" << endl;
 				Gsem->calcularPesoSem(lca,lco,s,ind);
 			break;
 			case 2:	//optimizacion general
-				cout << "\nOnTimerSem caso opt 2, tiempos iguales" << endl;
+				DOUT << "\nOnTimerSem caso opt 2, tiempos iguales, no hace nada" << endl;
 			break;
 			default:
 				cout<<"\nERROR SELECCIÓN OPTIMIZACIÓN SEMÁFOROS 0";
@@ -2270,13 +1710,15 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 		case 1:	//caso variable con más tiempo horizontal
 			switch(opt){
 			case 0:	//caso normal
+				DOUT << "\nOnTimerSem caso opt 0, mas tiempo horizontal" << endl;
 				if(!flagaux) s->setTimer(rand()%200+360,rand()%160+320,rand()%200+520,rand()%160+320);	//para que la asignacion solo la haga una vez
 			break;
-			case 1:	//optimizacion local
+			case 1:	//optimizacion local 
+				DOUT << "\nOnTimerSem caso opt 1, mas tiempo horizontal" << endl;
 				Gsem->calcularPesoSem(lca,lco,s,ind);
 			break;
 			case 2:	//optimizacion general
-				cout << "\nOnTimerSem caso opt 2, mas tiempo horizontal" << endl;
+				DOUT << "\nOnTimerSem caso opt 2, mas tiempo horizontal, no hace nada" << endl;
 			break;
 			default:
 				cout<<"\nERROR SELECCIÓN OPTIMIZACIÓN SEMÁFOROS 1";
@@ -2287,13 +1729,15 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 		case 2:	//caso variable con más tiempo vertical
 			switch(opt){
 			case 0:	//caso normal
+				DOUT << "\nOnTimerSem caso opt 0, mas tiempo vertical" << endl;
 				if(!flagaux) s->setTimer(rand()%200+520,rand()%160+320,rand()%200+360,rand()%160+320);	//para que la asignacion solo se haga una vez
 			break;
 			case 1:	//optimizacion local
+				DOUT << "\nOnTimerSem caso opt 1, mas tiempo vertical" << endl;
 				Gsem->calcularPesoSem(lca,lco,s,ind);
 			break;
 			case 2:	//optimizacion general
-				cout << "\nOnTimerSem caso opt 2, mas tiempo vertical" << endl;
+				DOUT << "\nOnTimerSem caso opt 2, mas tiempo vertical, no hace nada" << endl;
 			break;
 			default:
 				cout<<"\nERROR SELECCIÓN OPTIMIZACIÓN SEMÁFOROS 2";
@@ -2302,10 +1746,12 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 			}
 		break;
 		case 3:	//caso fijo horizontal
+			DOUT << "\nOnTimerSem caso fijo horizontal" << endl;
 			s->setTimer(1,1,0,1);
 			s->setTemp(0,1);	//evitar fugas de memoria cuando lleva mucho tiempo incrementando el contador
 		break;
 		case 4:	//caso fijo vertical
+			DOUT << "\nOnTimerSem caso fijo vertical" << endl;
 			s->setTimer(0,1,1,1);
 			s->setTemp(0,1);	//evitar fugas de memoria cuando lleva mucho tiempo incrementando el contador
 		break;
@@ -2314,7 +1760,11 @@ void interaccion::OnTimerSem(listaCalles& lca, listaCoches& lco, Semaforo* s, in
 	}
 	Gsem->setTempaux(Gsem->getTempaux()+1);
 	s->maquinaEstados();
-	cout << "sale de OnTimerSem" << endl;
+	cout << "\n\t[DEBUG] - Sale de OnTimerSem especifico " << ind << endl;
+}
+
+void interaccion::OnTimerSem(listaCalles& lca, Semaforo* s) {
+	DOUT << "OnTimerSem green wave (TODO)" << endl;
 }
 ///////////////////////////////
 
@@ -2462,8 +1912,6 @@ int interaccion::asociarAristaIndex(listaCalles calles, Semaforo* s, int posRel,
 			}
 		}
 	}
-	
-			
 }
 
 

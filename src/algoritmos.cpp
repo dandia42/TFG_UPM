@@ -54,9 +54,9 @@ void Algoritmo::Dijkstra(int inicio, grafo *G, bool sem){
 		for(int i=0;i<G->nvertices;i++)		//comprobar que se han visitado todos los nodos
 			if(!G->vertice[i].dv.getVisitado())
 				cout<<"\n\tFalta por visitar el vertice "<<i;
-		cout<<"\n\tSe han visitado todos los nodos"<<endl;
+		DOUT<<"\n\tSe han visitado todos los nodos"<<endl;
 		for(int i=0;i<G->nvertices;i++)
-			cout<<"\nVertice="<<i<<"   Distancia="<<G->vertice[i].getdv().getDist()<<"   IDant="<<G->vertice[i].getdv().getID()<<"   iter="<<G->vertice[i].getdv().getIter();
+			DOUT<<"\nVertice="<<i<<"   Distancia="<<G->vertice[i].getdv().getDist()<<"   IDant="<<G->vertice[i].getdv().getID()<<"   iter="<<G->vertice[i].getdv().getIter();
 	}
 	else{	//aplicar sobre el grafo conjugado
 		//Inicializar las distancias de los vertices
@@ -154,20 +154,18 @@ void Algoritmo::FloydWarshall(grafo* G){
 }
 
 
-void Algoritmo::greenWave(grafo* G){	//ciclo en el que aplicar el algoritmo
+void Algoritmo::greenWave(grafo* G, int*& rsem, int& ncompleta){	//ciclo en el que aplicar el algoritmo
 	int ini1=rand()%G->nvertices,ini2=rand()%G->nvertices,ini3=rand()%G->nvertices;	//se hace sobre el grafo inicial, no el conjugado
 	bool aux1=true;	//flag para obtener un ini3 que no se repita
-	int n1=0,n2=0,n3=0;	//numero de vértices por cada ruta
+	int n1=0,n2=0,n3=0;	//numero de nodos en cada ruta
 	int r=0, *r1=&r,*r2 = &r,*r3 = &r;	//las 3 rutas
+	int *calles, *calles1, *calles2, *calles3;
 	
 	while(ini1==ini2)	//evitar que los indices desde los que se busca la mejor ruta sean los mismos
 		ini2=rand()%G->nvertices;
-	
-	
-	
-	
-	cout<<"\nesto no deberia coincidir ninguno";
-	funcionAux(ini1,ini2,G,n1,r1);
+
+	DOUT<<"\nesto no deberia coincidir ninguno"<<endl;
+	funcionAux(ini1,ini2,G,n1,r1,calles1);
 	
 	while(aux1){	//tambien se podria aplicar usando std::find metiendole una lista de exclusion
 		ini3=rand()%G->nvertices;
@@ -178,19 +176,49 @@ void Algoritmo::greenWave(grafo* G){	//ciclo en el que aplicar el algoritmo
 		if(ini3==ini2)
 			aux1=1;
 	}
+	G->resetGrafo();	//se inicializan a 0 las variables de Dijkstra
+	funcionAux(ini2,ini3,G,n2,r2,calles2);
+	G->resetGrafo();	//se inicializan a 0 las variables de Dijkstra
+	funcionAux(ini3,ini1,G,n3,r3,calles3);
+	G->resetGrafo();	//se inicializan a 0 las variables de Dijkstra
 	
-	funcionAux(ini2,ini3,G,n2,r2);
-	funcionAux(ini3,ini1,G,n3,r3);
-	cout << "\n\t\tRuta 1: " << endl;
+	DOUT << "\n\tInfo rutas: n1: "<<n1<<", n2: "<<n2<<", n3: "<<n3<< ", nodos iniciales: " << ini1 << ", " << ini2 <<", "<<ini3 << endl;
+	DOUT << "\n\t\tRuta 1: " << endl;
 	for (int i=0;i<n1;i++)
-		cout << r1[i] << " ";
-	cout << "\n\t\tRuta 2: " << endl;
+		DOUT << r1[i] << " ";
+	DOUT << "\n\t\tRuta 2: " << endl;
 	for (int i=0;i<n2;i++)
-		cout << r2[i] << " ";
-	cout << "\n\t\tRuta 3: " << endl;
+		DOUT << r2[i] << " ";
+	DOUT << "\n\t\tRuta 3: " << endl;
 	for (int i=0;i<n3;i++)
-		cout << r3[i] << " ";
-		
+		DOUT << r3[i] << " ";
+	
+	// se agrupan las 3 rutas en 1
+	ncompleta = n1+n2+n3;
+	rsem = new int[ncompleta];
+	calles = new int[ncompleta];
+	int pos = 0;
+	for(int i = 0; i < n1; i++){
+		rsem[pos] = r1[i];
+		calles[pos++] = calles1[i];
+	}
+	for(int i = 0; i < n2; i++){
+		rsem[pos] = r2[i];
+		calles[pos++] = calles2[i];
+	}
+	for(int i = 0; i < n3; i++){
+		rsem[pos] = r3[i];
+		calles[pos++] = calles3[i];
+	}
+	
+	DOUT << "\n\t\tRuta Completa: " << endl;
+	for (int i=0;i<ncompleta;i++)
+		DOUT << rsem[i] << " ";
+	
+	DOUT << "\n\t\tCalles usadas: " << endl;
+	for (int i=0;i<ncompleta;i++)
+		DOUT << calles[i] << " ";
+
 	cin>>n1;//borrar esto cuando se compruebe que esta bien
 	
 	/*
@@ -249,13 +277,17 @@ void Algoritmo::greenWave(grafo* G){	//ciclo en el que aplicar el algoritmo
 }
 
 
-void Algoritmo::funcionAux(int inia, int inib, grafo *G, int n, int* r){
+void Algoritmo::funcionAux(int inia, int inib, grafo*& G, int &n, int*& r, int*& calles){
+	DOUT <<"****************************************************************************"<<endl;
 	Dijkstra(inia,G,true);	//encontrar la ruta optima desde el segundo vertice hasta todos los demás
+	DOUT <<"****************************************************************************"<<endl;
 	
 	//hacer un pseudo interaccion::setRuta() para conocer la ruta de ini2 a ini3
 	int aux=inib;
 	n=G->vertice[inib].dv.getIter();
 	r=new int[n];	//vector para almacenar la primera ruta
+	calles=new int[n];
+
 	for(int i=n-1;i>=0;i--){
 		r[i]=G->vertice[aux].dv.getID();
 		aux=G->vertice[aux].dv.getID();
@@ -264,66 +296,23 @@ void Algoritmo::funcionAux(int inia, int inib, grafo *G, int n, int* r){
 	for(int i=0;i<n;i++){
 		if(i<(n-1))//los primeros indices de la ruta parcial
 			for(int j=0;j<G->naristas;j++){
-				if(G->arista[j].getN1()==r[i] || G->arista[j].getN2()==r[i])//si el vertice anterior o el siguiente está en la ruta, se aumenta el peso de la arista que los une para excluirla de la siguiente ruta
+				if(G->arista[j].getN1()==r[i]) {//si el vertice anterior o el siguiente está en la ruta, se aumenta el peso de la arista que los une para excluirla de la siguiente ruta
+					G->arista[j].setPesoVariable(1000);
+					calles[i]=j;
+				}
+				if(G->arista[j].getN2()==r[i])
 					G->arista[j].setPesoVariable(1000);
 			}
 		else//el ultimo indice de la ruta parcial
 			for(int j=0;j<G->naristas;j++){
-				if(G->arista[j].getN1()==r[i])// solo el origen, si el vertice anterior o el siguiente está en la ruta, se aumenta el peso de la arista que los une para excluirla de la siguiente ruta
+				if(G->arista[j].getN1()==r[i]) {// solo el origen, si el vertice anterior o el siguiente está en la ruta, se aumenta el peso de la arista que los une para excluirla de la siguiente ruta
 					G->arista[j].setPesoVariable(1000);
+					calles[i]=j;
+				}
 			}
 	}
+	DOUT<<"\n\t\t***** Salida ruta funcion aux *****";
 	for(int i=0;i<n;i++)
-	cout<<"\t"<<r[i];
-	cout<<"\n";
+	DOUT<<"\t"<<r[i]<<endl;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

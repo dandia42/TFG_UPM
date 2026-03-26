@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2D.h"
 #include "glut.h"
+
 class Calle
 {
 	Vector2D posicion;

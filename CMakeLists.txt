@@ -33,6 +33,11 @@ file(GLOB_RECURSE LIBRARIES "${PROJECT_SOURCE_DIR}/lib/*.lib")
 # Definir el ejecutable
 add_executable(TFGExecutable ${SOURCES})
 
+# Definir macro DEBUG solo en compilación Debug
+target_compile_definitions(TFGExecutable PRIVATE 
+    $<$<CONFIG:Debug>:DEBUG>
+)
+
 # Enlazar las bibliotecas de OpenGL y GLUT, junto con las externas
 target_link_libraries(TFGExecutable ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${LIBRARIES})
 
