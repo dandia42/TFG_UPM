@@ -1662,6 +1662,7 @@ int getRC(grafo* G, int* r,int n){
 	/*for(int i=0;i<n;i++){
 		G->getArista
 	}*/
+return -1;
 }
 
 void interaccion::OnTimerSem(listaCalles& lca,listaCoches& lco, listaSemaforos ls, int opt, grafo* Gsem){
@@ -1670,16 +1671,17 @@ void interaccion::OnTimerSem(listaCalles& lca,listaCoches& lco, listaSemaforos l
 	if(!flagaux && opt == 2){
 		DOUT << "\nVa a calcularse la ruta ciclica para green wave" << endl;
 		int *rsem, *rc, n=-1;
-		Algoritmo::greenWave(Gsem, rsem, n);
+		Algoritmo::greenWave(Gsem, rsem, n, lca);
 		DOUT << "\nRuta green wave terminada" << endl;
 		// Se calculan tiempos de semaforos segun longitud de calle
 		for(int i=0; i < n; i++){
-			rc[i]=getRC(Gsem,rsem,n);
-			OnTimerSem(lca, ls.ls[i]);
+			//rc[i]=getRC(Gsem,rsem,n);
+			//OnTimerSem(lca, ls.ls[i]);
+			DOUT << "\nDescomentar esto (TODO)"<<endl;
 		}
 	}
 	for(int i=0;i<ls.numero;i++)
-		OnTimerSem(lca,lco,ls.ls[i],opt,&Gsem[i],flagaux,i);
+		//OnTimerSem(lca,lco,ls.ls[i],opt,&Gsem[i],flagaux,i);
 	flagaux=true;	//para que la asignacion de tiempos en los casos 1 y 2 solo se haga una vez
 
 	DOUT << "\n\t[DEBUG] - Sale de OnTimerSem general" << endl;

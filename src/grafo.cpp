@@ -69,6 +69,7 @@ void grafo::crearGrafo(int filas, int columnas, listaCalles calles, listaSemafor
 	
 	crearGrafoConjugado(flag);
 	asociarCalleVertice(calles);
+	asociarCalleArista(calles,semaforos,filas,columnas);
 }
 void grafo::crearGrafo(grafo &G){
 	vertice=G.vertice;
@@ -182,7 +183,7 @@ void grafo::asignarSentidoAristas(listaCalles calles, listaSemaforos semaforos, 
 					}
 				break;
 				}
-				arista[iarista].N3=interaccion::asociarAristaIndex(calles,semaforos.ls[(i*j-1+(i-1)*(filas-j))],aux,filas,columnas,true);
+				//arista[iarista].N3=interaccion::asociarAristaIndex(calles,semaforos.ls[(i*j-1+(i-1)*(filas-j))],aux,filas,columnas,true);
 			}	arista[iarista].pesoVariable=interaccion::asociarAristaIndex(calles,semaforos.ls[(i*j-1+(i-1)*(filas-j))],aux,filas,columnas,false);
 				//cout<<"\nse asignan los valores "<<arista[iarista].N1<<" "<<arista[iarista].N2<<" \tindice "<<arista[iarista].N3<<" \tpeso fijo "<<arista[iarista].pesoFijo<<"   peso variable "<<arista[iarista].pesoVariable<<" a la arista "<<iarista;
 				iarista++;
@@ -265,6 +266,9 @@ void grafo::listaAdy(int n, bool conj){	//n es naristas(conj) cambiar conj//////
 			for(int x=0;x<vertice[k].nady;x++){
 				cout<<vertice[k].ady[x]<<"  "<<vertice[k].pesoady[x]<<"    ";
 			}
+		}
+		for(int i=0;i<naristas;i++){
+			cout<<"\nLa arista "<<i<<" comunica los vertices: "<<arista[i].getN1()<<" y "<<arista[i].getN2();
 		}
 	}
 	else{///////////////////////////////////////
@@ -388,6 +392,25 @@ void grafo::asociarCalleVertice(listaCalles calles){
 		cout<<"\nERROR en la asociación calle-vertice\t\t"<<ivertices<<"\n";
 	else
 		cout<<"\nSe han asociado "<<ivertices<<" nodos con "<<calles.numero<<" calles\n";
+}
+
+
+void grafo::asociarCalleArista(listaCalles calles, listaSemaforos semaforos, int filas, int columnas){
+	int iaristas=0;
+	for(int i=0;i<semaforos.numero;i++){
+		for(int j=0;j<4;j++){
+			if(semaforos.ls[i]->getSalida(j)){
+				arista[iaristas].setN3(semaforos.ls[i]->getCID(j));
+				iaristas++;
+				cout<<"Arista "<<iaristas<<" se asocia a calle "<<semaforos.ls[i]->getCID(j)<<endl;
+			}
+		}
+	}
+
+	if(iaristas>=(calles.numero-filas-columnas))
+		cout<<"\nERROR en la asociación calle-arista\t\t"<<iaristas<<"\n";
+	else
+		cout<<"\nSe han asociado "<<iaristas<<" aristas con "<<calles.numero<<" calles\n";
 }
 
 

@@ -241,7 +241,6 @@ void Mundo::OnTimer() {
 	if(!editor::getEnable()){//cambiar quitar esto
 	coches.mueve(t);
 	interaccion::OnTimerSem(calles,coches,semaforos,optSem,Gsem);
-	cout << "prueba"<<endl;
 		interaccion::cruce(coches,semaforos,calles,pg,&tiempo,iteraciones,filas,columnas,optRuta);
 	interaccion::salirMundo(coches, filas, columnas, calles.getLong());
 	interaccion::parcheSetDir(coches,calles);	//antes de distSeg porque se cambia el stop

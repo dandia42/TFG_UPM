@@ -154,7 +154,7 @@ void Algoritmo::FloydWarshall(grafo* G){
 }
 
 
-void Algoritmo::greenWave(grafo* G, int*& rsem, int& ncompleta){	//ciclo en el que aplicar el algoritmo
+void Algoritmo::greenWave(grafo* G, int*& rsem, int& ncompleta, listaCalles &lca){	//ciclo en el que aplicar el algoritmo
 	int ini1=rand()%G->nvertices,ini2=rand()%G->nvertices,ini3=rand()%G->nvertices;	//se hace sobre el grafo inicial, no el conjugado
 	bool aux1=true;	//flag para obtener un ini3 que no se repita
 	int n1=0,n2=0,n3=0;	//numero de nodos en cada ruta
@@ -216,8 +216,10 @@ void Algoritmo::greenWave(grafo* G, int*& rsem, int& ncompleta){	//ciclo en el q
 		DOUT << rsem[i] << " ";
 	
 	DOUT << "\n\t\tCalles usadas: " << endl;
-	for (int i=0;i<ncompleta;i++)
+	for (int i=0;i<ncompleta;i++){
 		DOUT << calles[i] << " ";
+		lca.lca[calles[i]]->setColor(1,0,1);
+	}
 
 	cin>>n1;//borrar esto cuando se compruebe que esta bien
 	
@@ -298,7 +300,7 @@ void Algoritmo::funcionAux(int inia, int inib, grafo*& G, int &n, int*& r, int*&
 			for(int j=0;j<G->naristas;j++){
 				if(G->arista[j].getN1()==r[i]) {//si el vertice anterior o el siguiente está en la ruta, se aumenta el peso de la arista que los une para excluirla de la siguiente ruta
 					G->arista[j].setPesoVariable(1000);
-					calles[i]=j;
+					calles[i]=G->arista[j].getN3();
 				}
 				if(G->arista[j].getN2()==r[i])
 					G->arista[j].setPesoVariable(1000);
@@ -307,7 +309,7 @@ void Algoritmo::funcionAux(int inia, int inib, grafo*& G, int &n, int*& r, int*&
 			for(int j=0;j<G->naristas;j++){
 				if(G->arista[j].getN1()==r[i]) {// solo el origen, si el vertice anterior o el siguiente está en la ruta, se aumenta el peso de la arista que los une para excluirla de la siguiente ruta
 					G->arista[j].setPesoVariable(1000);
-					calles[i]=j;
+					calles[i]=G->arista[j].getN3();
 				}
 			}
 	}

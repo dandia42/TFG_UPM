@@ -42,6 +42,7 @@ public:
 	friend class interaccion;	
 	friend class editor;
 	friend class grafo;
+	friend class Algoritmo;
 };
 
 class listaSemaforos {
