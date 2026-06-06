@@ -78,7 +78,7 @@ public:
 	Arista getArista(int n){return arista[n];}
 	void dibujaArista(listaSemaforos, int, int, int);
 	void asociarCalleVertice(listaCalles);
-	void asociarCalleArista(listaCalles,listaSemaforos,int,int);
+	void asociarCalleArista(listaCalles,listaSemaforos);
 	void listaAdy(int n, bool);
 	void calcularPesoconj(bool);
 	void calcularPesoSem(listaCalles&,listaCoches&,Semaforo*,int);

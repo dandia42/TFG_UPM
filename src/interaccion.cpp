@@ -1916,7 +1916,6 @@ int interaccion::asociarAristaIndex(listaCalles calles, Semaforo* s, int posRel,
 	}
 }
 
-
 /*evitar que el coche se quede parado y le cambie la direccion (cambiar: se debería arreglar en otra parte del código pero no se cual)*/
 void interaccion::parcheSetDir(listaCoches lco, listaCalles lca){
 	for(int i=0;i<lco.numero;i++){

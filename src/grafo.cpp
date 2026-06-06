@@ -69,7 +69,7 @@ void grafo::crearGrafo(int filas, int columnas, listaCalles calles, listaSemafor
 	
 	crearGrafoConjugado(flag);
 	asociarCalleVertice(calles);
-	asociarCalleArista(calles,semaforos,filas,columnas);
+	asociarCalleArista(calles,semaforos);
 }
 void grafo::crearGrafo(grafo &G){
 	vertice=G.vertice;
@@ -395,22 +395,17 @@ void grafo::asociarCalleVertice(listaCalles calles){
 }
 
 
-void grafo::asociarCalleArista(listaCalles calles, listaSemaforos semaforos, int filas, int columnas){
+void grafo::asociarCalleArista(listaCalles calles, listaSemaforos semaforos){
 	int iaristas=0;
 	for(int i=0;i<semaforos.numero;i++){
 		for(int j=0;j<4;j++){
 			if(semaforos.ls[i]->getSalida(j)){
 				arista[iaristas].setN3(semaforos.ls[i]->getCID(j));
+				cout<<"Arista "<<iaristas<<" se asocia a calle "<<arista[iaristas].getN3()<<endl;
 				iaristas++;
-				cout<<"Arista "<<iaristas<<" se asocia a calle "<<semaforos.ls[i]->getCID(j)<<endl;
 			}
 		}
 	}
-
-	if(iaristas>=(calles.numero-filas-columnas))
-		cout<<"\nERROR en la asociación calle-arista\t\t"<<iaristas<<"\n";
-	else
-		cout<<"\nSe han asociado "<<iaristas<<" aristas con "<<calles.numero<<" calles\n";
 }
 
 
