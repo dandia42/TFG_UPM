@@ -1,5 +1,6 @@
 #ifdef DEBUG
-    #define DOUT std::cout
+#define DOUT std::cout
 #else
-    #define DOUT if(false) std::cout
+#define DOUT \
+  if (false) std::cout
 #endif

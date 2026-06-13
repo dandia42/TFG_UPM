@@ -1,43 +1,43 @@
 #pragma once
-#include "listas.h"
-#include "interaccion.h"
+#include "interaction.h"
+#include "lists.h"
 
-class editor{	
-public:
-	static Vector2D posicion;
-	static int indice, maxindice;
-	static int objeto;		//1 calle	2 coche	3 semaforo
-	static bool flagCarga;
-	static bool enable;
-//general
-	static void dibuja();
-	static void setPos(int, int, listaCoches, listaCalles, listaSemaforos);
-	static bool getEnable();
-	static int getTipoObjeto();
-	static int getIndice();
-	static void cargaDatos(listaCoches, listaCalles, listaSemaforos);		//se cargan los datos estaticos del mundo
-	static void actualizaDatos(listaCoches*, listaCalles*, listaSemaforos*);		//aqui hay que meter como referencia las cosas que cambian
-	static void toggleEnable();	//habilita o deshabilita el editor
-	static void funcionesEditor(unsigned char, listaCoches, listaCalles, listaSemaforos);
-	static void cambiarObjeto(int, listaCoches, listaCalles, listaSemaforos);		//cambia entre objetos del mismo tipo
-	static void cambiarTipoObjeto(int);	//cambia entre coche, semaforo y calle
-	
-//calles	
-	static void cambiarTipoCalle(int, listaCalles, listaSemaforos);	//cambia el tipo de calle
-	//static void aumentarTipoCalle();
-	//static void disminuirTipoCalle();
-	static void cambiarLongitud(listaCalles, listaCoches, listaSemaforos, int);	//cambia la longitud de la calle
+class Editor {
+ public:
+  static Vector2D position_;
+  static int index_, maxIndex_;
+  static int object_;  // enum 1 street	2 car	3 trafficlight
+  static bool loadFlag_;
+  static bool enable_;
+  // general
+  static void draw();
+  static void setPosition(int, int, CarList, StreetList, TrafficlightList);
+  static bool getEnable();
+  static int getObjectType();
+  static int getIndex();
+  static void loadData(CarList, StreetList, TrafficlightList);  // Load static world data
+  static void updateData(CarList*, StreetList*,
+                             TrafficlightList*);  // Reference variables for changing objects
+  static void toggleEnable();                   // Enable or disable editor
+  static void editorFunctions(unsigned char, CarList, StreetList, TrafficlightList);
+  static void changeObject(int, CarList, StreetList, TrafficlightList);  // Toggle between same type objects
+  static void changeObjectType(int);                                        // Toggle between different type objects
 
-//coches
-	static void cambiarCantidad(int, listaCoches, listaCalles);	//cambia la cantidad de coches
-	
-//semaforos
-	static void cambiarColor(int, listaSemaforos);		//cambia el color del semaforo
-	
-//mundo
-	static void cambiarMatriz();		//reinicia el mundo
-	
-//auxiliar
-	static bool alcanzarExtremo(int, listaCoches, listaCalles, listaSemaforos);
-	
+  // streets
+  static void changeStreet(int, StreetList, TrafficlightList);  // Change street type
+  // static void aumentarTipoCalle();
+  // static void disminuirTipoCalle();
+  static void changeLength(StreetList, CarList, TrafficlightList, int);  // Change street length
+
+  // cars
+  static void changeCarNumber(int, CarList, StreetList);  // Change number of cars
+
+  // trafficlights
+  static void changeTrafficlightState(int, TrafficlightList);  // Change trafficlight state
+
+  // World
+  static void changeMatrix();  // Restart world
+
+  // Helper
+  static bool reachEdge(int, CarList, StreetList, TrafficlightList);
 };

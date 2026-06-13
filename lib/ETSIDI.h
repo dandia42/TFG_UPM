@@ -71,7 +71,7 @@ using namespace std;
 	ETSIDI_API long getMillis();
 	//FUNCIONES PARA IMPRIMIR UN TEXTO EN OPENGL CON FUENTES TTF--
 	ETSIDI_API void setJustificacion(JUSTIFICACION_H just=IZQUIERDA, JUSTIFICACION_V=LINEA_BASE);
-	ETSIDI_API void setTextColor(float r, float g, float b, float alpha=1.0F);
+	ETSIDI_API void setTextColor(float r_, float g_, float b_, float alpha=1.0F);
 	ETSIDI_API void setFont(const char *fuente, int size=12);
 	ETSIDI_API void print( const char *txt, const char *fuente=0, int size=12); 
 	ETSIDI_API void printxy(const char *txt, int x, int y, int z=0);
@@ -100,7 +100,7 @@ using namespace std;
     
 	};
 	//CLASE SPRITE------------------------------------------------------------
-	//un rectangulo con textura que facilita el dibujo y animación en pantalla
+	//un rectangulo con textura que facilita el dibujo y animaciÃ³n en pantalla
 	class Sprite
 	{
 	public:
@@ -108,8 +108,8 @@ using namespace std;
 		ETSIDI_API virtual ~Sprite();
 		ETSIDI_API virtual void draw();
 		ETSIDI_API virtual void loop();
-		void setPos(float x, float y);
-		void setVel(float vx, float vy);
+		void setPosition(float x, float y);
+		void setVelocity(float vx, float vy);
 		void setSize(float w, float h);
 		void setCenter(float cx, float cy); 
 		void flip(bool h,bool v);
@@ -134,7 +134,7 @@ using namespace std;
 		char _texturePath[255];
 	};
 	//CLASE SPRITESEQUENCE------------------------------------------------------------
-	//un sprite con una secuencia de imagenes que hacen una animación.
+	//un sprite con una secuencia de imagenes que hacen una animaciÃ³n.
 	class SpriteSequence: public Sprite
 	{
 	public:
@@ -178,7 +178,7 @@ using namespace std;
 			_height = h;
 	}
 	inline double Sprite::getAngle() const {return _angle;}
-	inline void Sprite::setPos(float x, float y){pos.x=x;pos.y=y;}
+	inline void Sprite::setPosition(float x, float y){pos.x=x;pos.y=y;}
 	inline void Sprite::setCenter(float cx, float cy){anchor.x=cx; anchor.y=cy;} 
 	inline void Sprite::flip(bool h,bool v){horizontal_flip=h; vertical_flip=v;}
 	inline bool Sprite::isFlippedH() const{return horizontal_flip;}

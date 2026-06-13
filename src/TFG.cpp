@@ -1,59 +1,55 @@
 #pragma once
 #include <GL/glut.h>
-#include "Mundo.h"
 
-Mundo mundo;
+#include "world.h"
 
-void OnDraw(void); //esta funcion sera llamada para dibujar
-void OnTimer(int value); //esta funcion sera llamada cuando transcurra una temporizacion
-void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
+World world;
 
-int main(int argc, char* argv[])
-{	
-	//Inicializar el gestor de ventanas GLUT
-	//y crear la ventana
-	glutInit(&argc, argv);
-	glutInitWindowSize(1200,900);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glEnable(GLUT_DOUBLE);
-	glutCreateWindow("Mundo");
+void onDraw(void);                                     // draw method
+void onTimer(int value);                               // timer method
+void onKeyboardDown(unsigned char key, int x, int y);  // method when a key is pressed
 
-	mundo.InitGL();
+int main(int argc, char* argv[]) {
+  // Initialize GLUT window manager and creates window
+  glutInit(&argc, argv);
+  glutInitWindowSize(1200, 900);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  glEnable(GLUT_DOUBLE);
+  glutCreateWindow("world");
 
-	//Registrar los callbacks
-	glutDisplayFunc(OnDraw);
-	//glutMouseFunc(OnRaton);
+  world.initGL();
 
-	glutTimerFunc(25, OnTimer, 0);//le decimos que dentro de 25ms llame 1 vez a la funcion OnTimer()
-	glutKeyboardFunc(OnKeyboardDown);
-	glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
+  // Callbacks registry
+  glutDisplayFunc(onDraw);
+  // glutMouseFunc(OnRaton);
 
-	mundo.Init();
+  glutTimerFunc(25, onTimer, 0);  // Calls onTimer() each 25ms
+  glutKeyboardFunc(onKeyboardDown);
+  glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
 
-	//pasarle el control a GLUT,que llamara a los callbacks
-	glutMainLoop();
+  world.init();
 
-	return 0;
+  // GLUT control to manage callbacks
+  glutMainLoop();
+
+  return 0;
 }
 
-void OnDraw(void)
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	
-	mundo.OnDraw();
-	
-	glutSwapBuffers();
+void onDraw(void) {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  world.onDraw();
+
+  glutSwapBuffers();
 }
-void OnTimer(int value)
-{
-	mundo.OnTimer();
-	glutTimerFunc(25, OnTimer, 0);
-	glutPostRedisplay();
+void onTimer(int value) {
+  world.onTimer();
+  glutTimerFunc(25, onTimer, 0);
+  glutPostRedisplay();
 }
-void OnKeyboardDown(unsigned char key, int x, int y)
-{
-	mundo.OnKeyboardDown(key, x, y);
-	glutPostRedisplay();
+void onKeyboardDown(unsigned char key, int x, int y) {
+  world.onKeyboardDown(key, x, y);
+  glutPostRedisplay();
 }

@@ -1,4 +1,4 @@
-rutas semaforos
+rutas trafficlights_
 0 0
 ***************************************************************************
 ********************   Tiempo medio: 31.458 segundos   ********************
@@ -82,3 +82,4 @@ rutas semaforos
 
 
 
+hacer diagramas de clases, UML, revisar otras herramientas, revisar nombres y seguir reglas

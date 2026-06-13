@@ -1,297 +1,285 @@
 #pragma once
 #include "editor.h"
+
 #include <iostream>
 using namespace std;
 
-Vector2D editor::posicion={-100,-100};
-int editor::indice=0, editor::maxindice=0;
-int editor::objeto=0;
-bool editor::flagCarga=false;
-bool editor::enable=false;
+Vector2D Editor::position_ = {-100, -100};
+int Editor::index_ = 0, Editor::maxIndex_ = 0;
+int Editor::object_ = 0;
+bool Editor::loadFlag_ = false;
+bool Editor::enable_ = false;
 
+void Editor::draw() {
+  if (enable_) {  // Editor enabled and no cars edited
+    glPushMatrix();
+    glColor3f(1, 1, 1);
+    glDisable(GL_LIGHTING);
+    glTranslatef(position_.x, position_.y, -2);
+    glRotatef(45, 0, 0, 1);
+    glBegin(GL_POLYGON);  // Rectangle 1
+    glVertex2d(-15, -3);
+    glVertex2d(-15, 3);
+    glVertex2d(15, 3);
+    glVertex2d(15, -3);
+    glEnd();
+    glBegin(GL_POLYGON);  // Rectangle 2
+    glVertex2d(-3, -15);
+    glVertex2d(-3, 15);
+    glVertex2d(3, 15);
+    glVertex2d(3, -15);
+    glEnd();
 
-void editor::dibuja(){
-	if(enable){	//editor activado y no se editan coches
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glDisable(GL_LIGHTING);
-	glTranslatef(posicion.x,posicion.y,-2);
-	glRotatef(45,0,0,1);
-	glBegin(GL_POLYGON);			//rectangulo1
-		glVertex2d(-15,-3);
-		glVertex2d(-15,3);
-		glVertex2d(15,3);
-		glVertex2d(15,-3);
-	glEnd();
-	glBegin(GL_POLYGON);			//rectangulo2
-		glVertex2d(-3,-15);
-		glVertex2d(-3,15);
-		glVertex2d(3,15);
-		glVertex2d(3,-15);
-	glEnd();
-	
-	glPopMatrix();
-	}
+    glPopMatrix();
+  }
 }
-void editor::setPos(int tipo, int ind, listaCoches coches, listaCalles calles, listaSemaforos semaforos){
-	switch(objeto){
-	case 1:	//calle
-		posicion=calles.lca[indice]->getPos();
-		cout<<"\nse cambia la posicion a la calle "<<indice<<endl;
-	break;
-	case 2:	//coche
-		posicion=coches.lco[indice]->getPos();
-	break;
-	case 3:	//semaforo
-		posicion=semaforos.ls[indice]->getPos();
-		cout<<"\nse cambia la luz al semaforo "<<indice<<", ahora es "<<semaforos.ls[indice]->getLuz()<<endl;
-	break;
-	}
+void Editor::setPosition(int type, int index, CarList cars, StreetList streets, TrafficlightList trafficlights) { //TODO quitar type index
+  switch (object_) {
+    case 1:  // street
+      position_ = streets.streetList_[index_]->getPosition();
+      cout << "\nse cambia la position_ a la street " << index_ << endl;
+      break;
+    case 2:  // coche
+      position_ = cars.carList_[index_]->getPosition();
+      break;
+    case 3:  // trafficlight
+      position_ = trafficlights.trafficlightList_[index_]->getPosition();
+      cout << "\nse cambia la state_ al trafficlight " << index_ << ", ahora es " << trafficlights.trafficlightList_[index_]->getState() << endl;
+      break;
+  }
 }
-bool editor::getEnable(){
-	
-	return enable;
+bool Editor::getEnable() {
+  return enable_;
 }
-int editor::getTipoObjeto(){
-	return objeto;
+int Editor::getObjectType() {
+  return object_;
 }
-int editor::getIndice(){
-	return indice;
+int Editor::getIndex() {
+  return index_;
 }
-void editor::cargaDatos(listaCoches co, listaCalles ca, listaSemaforos s){
-	if(flagCarga==false){		//solo carga los datos estaticos la primera vez
-		
-		/*coches=&co;
-		calles=&ca;
-		semaforos=&s;*/
-		flagCarga=true;
-		cout<<"se han cargado los datos estaticos"<<endl;
-		
-	}
-}
-void editor::actualizaDatos(listaCoches *pco, listaCalles *pca, listaSemaforos *ps){
-	
-}
+void Editor::loadData(CarList co, StreetList ca, TrafficlightList s) {
+  if (loadFlag_ == false) {  // Load static data the first time
 
-void editor::toggleEnable(){
-	enable = !enable;
+    /*cars=&co;
+    streets=&ca;
+    trafficlights=&s;*/
+    loadFlag_ = true;
+    cout << "Static data have been loaded" << endl;
+  }
+}
+void Editor::updateData(CarList* pco, StreetList* pca, TrafficlightList* ps) {}
+
+void Editor::toggleEnable() {
+  enable_ = !enable_;
 }
 
-void editor::funcionesEditor(unsigned char key, listaCoches lco, listaCalles lca, listaSemaforos ls){
-	switch(key){
-	case 'i':	//aumenta el estado del objeto (tipo calle, luz semaforo)
-		switch(objeto){
-		case 1:	//calle
-			cambiarTipoCalle(1,lca,ls);
-			cout<<"aumentar calle";
-		break;
-		case 2:	//coche
-			cambiarCantidad(1,lco,lca);
-			cout<<"aumentar coches";
-		break;
-		case 3:	//semaforo
-			cambiarColor(1,ls);
-			cout<<"aumentar semaforo";
-		break;
-		}
-	break;
-	case 'o':	//disminuye el estado del objeto (tipo calle, luz semaforo)
-		switch(objeto){
-		case 1:	//calle
-			cambiarTipoCalle(-1,lca,ls);
-			cout<<"disminuir calle";
-		break;
-		case 2:	//coche
-			cambiarCantidad(0,lco,lca);
-			cout<<"disminuir coches";
-		break;
-		case 3:	//semaforo
-			cambiarColor(-1,ls);
-			cout<<"disminuir semaforo";
-		break;
-		}
-	break;
-	case 'x':
-		switch(objeto){
-		case 1:	//calle
-			lca.eliminarindex(indice);
-			cout<<"eliminar calle";
-		break;
-		case 2:	//coche
-			lco.eliminarindex(indice);
-			cout<<"eliminar coches";
-		break;
-		case 3:	//semaforo
-			ls.eliminarindex(indice);
-			cout<<"eliminar semaforo";
-		break;
-		}
-	break;
-	case '.':	//aumentar longitud
-		if(objeto==1)
-			cambiarLongitud(lca,lco,ls,1);
-	break;
-	case ',':	//disminuir longitud
-		if(objeto==1)
-			cambiarLongitud(lca,lco,ls,-1);
-	break;
-	case '1':	//cambia a calle
-		cambiarTipoObjeto(1);
-		cambiarObjeto(0,lco,lca,ls);
-		cout<<"objeto: calle"<<objeto<<"\t";
-	break;
-	case '2':	//cambia a coche
-		cambiarTipoObjeto(2);
-		cambiarObjeto(0,lco,lca,ls);
-		cout<<"objeto: coche"<<objeto<<"\t";
-	break;
-	case '3':	//cambia a semaforo
-		cambiarTipoObjeto(3);
-		cambiarObjeto(0,lco,lca,ls);
-		cout<<"objeto: semaforo"<<objeto<<"\t";
-	break;
-	case '9':	//reinicia el mundo
-		cambiarMatriz();
-	break;
-	case 'r':	//aumenta el indice del tipo de objeto a editar
-		cambiarObjeto(1,lco,lca,ls);
-		cout<<"indice: "<<indice<<"\t";
-	break;
-	case 'f':	//disminuye el indice del tipo de objeto a editar
-		cambiarObjeto(-1,lco,lca,ls);
-		cout<<"indice: "<<indice<<"\t";
-	break;
-	case 's':
-		cout<<"stop "<<lco.lco[indice]->getStop();
-	break;
-	}
-	setPos(getTipoObjeto(),getIndice(),lco,lca,ls);
+void Editor::editorFunctions(unsigned char key, CarList carList_, StreetList streetList, TrafficlightList trafficlightList) {
+  switch (key) {
+    case 'i':  // Increase object state (street type, trafficlight state)
+      switch (object_) {
+        case 1:  // street
+          changeStreet(1, streetList, trafficlightList);
+          cout << "Increase street";
+          break;
+        case 2:  // car
+          changeCarNumber(1, carList_, streetList);
+          cout << "Increase car";
+          break;
+        case 3:  // trafficlight
+          changeTrafficlightState(1, trafficlightList);
+          cout << "Increase trafficlight";
+          break;
+      }
+      break;
+    case 'o':  // Decrease object state (street type, trafficlight state)
+      switch (object_) {
+        case 1:  // street
+          changeStreet(-1, streetList, trafficlightList);
+          cout << "Decrease street";
+          break;
+        case 2:  // car
+          changeCarNumber(0, carList_, streetList);
+          cout << "Decrease car";
+          break;
+        case 3:  // trafficlight
+          changeTrafficlightState(-1, trafficlightList);
+          cout << "Decrease trafficlight";
+          break;
+      }
+      break;
+    case 'x':
+      switch (object_) {
+        case 1:  // street
+          streetList.deleteIndex(index_);
+          cout << "Delete street";
+          break;
+        case 2:  // coche
+          carList_.deleteIndex(index_);
+          cout << "Delete cars";
+          break;
+        case 3:  // trafficlight
+          trafficlightList.deleteIndex(index_);
+          cout << "Delete trafficlight";
+          break;
+      }
+      break;
+    case '.':  // Increase longitud
+      if (object_ == 1) changeLength(streetList, carList_, trafficlightList, 1);
+      break;
+    case ',':  // Decrease longitud
+      if (object_ == 1) changeLength(streetList, carList_, trafficlightList, -1);
+      break;
+    case '1':  // Change to street
+      changeObjectType(1);
+      changeObject(0, carList_, streetList, trafficlightList);
+      cout << "Object: street" << object_ << "\t";
+      break;
+    case '2':  // Change to coche
+      changeObjectType(2);
+      changeObject(0, carList_, streetList, trafficlightList);
+      cout << "Object: coche" << object_ << "\t";
+      break;
+    case '3':  // Change to trafficlight
+      changeObjectType(3);
+      changeObject(0, carList_, streetList, trafficlightList);
+      cout << "Object: trafficlight" << object_ << "\t";
+      break;
+    case '9':  // Restart world
+      changeMatrix();
+      break;
+    case 'r_':  // Increase object type index
+      changeObject(1, carList_, streetList, trafficlightList);
+      cout << "Index: " << index_ << "\t";
+      break;
+    case 'f':  // Decrease object type index
+      changeObject(-1, carList_, streetList, trafficlightList);
+      cout << "Index: " << index_ << "\t";
+      break;
+    case 's':
+      cout << "Stop " << carList_.carList_[index_]->getStop();
+      break;
+  }
+  setPosition(getObjectType(), getIndex(), carList_, streetList, trafficlightList);
 }
 
-void editor::cambiarObjeto(int i, listaCoches lco, listaCalles lca, listaSemaforos ls){
-	if(i){
-		if(alcanzarExtremo(i, lco, lca, ls)){}
-		else
-			indice+=i;
-	}
-	else
-		indice=0;	//si se cambia el tipo de objeto se pasa al primero de la lista
+void Editor::changeObject(int i, CarList carList, StreetList streetList, TrafficlightList trafficlightList) {
+  if (i) {
+    if (reachEdge(i, carList, streetList, trafficlightList)) {
+    } else
+      index_ += i;
+  } else
+    index_ = 0;  // If the object type is changed, go to the first of the list
 }
 
-void editor::cambiarTipoObjeto(int o){
-	objeto=o;
+void Editor::changeObjectType(int o) {
+  object_ = o;
 }
 
+/*streets*/
+void Editor::changeStreet(int order, StreetList streets, TrafficlightList trafficlights) {  // 1 Increase, -1 Decrease
 
-/*calles*/
-void editor::cambiarTipoCalle(int orden, listaCalles calles, listaSemaforos semaforos){	//1 aumentar, -1 disminuir
-	
-	calles.lca[indice]->setTipo(calles.lca[indice]->getTipo()+orden);
-	interaccion::cambiarTipoCalle(calles);
-	interaccion::comprobarInalcanzable(semaforos, calles);
-	interaccion::callesem(calles,semaforos);
-	cout<<"\nse ha cambiado el tipo de la calle";
-
+  streets.streetList_[index_]->setType(streets.streetList_[index_]->getType() + order);
+  Interaction::changeStreet(streets);
+  Interaction::unreachableCheck(trafficlights, streets);
+  Interaction::streetsInCrossroad(streets, trafficlights);
+  cout << "\nStreet type has been changed";
 }
 
-void editor::cambiarLongitud(listaCalles calles, listaCoches coches, listaSemaforos semaforos, int mult){
-	Vector2D aux=calles.lca[indice]->getPos();
-	if(calles.lca[indice]->direccion &&!((calles.lca[indice]->getLong()<25&&mult<0)||(calles.lca[indice]->getLong()>50&&mult>0))){	//horizontal
-		for(int i=0;i<calles.numero;i++){
-			if(calles.lca[i]->getPos().x==aux.x){
-				calles.lca[i]->setLong(calles.lca[i]->getLong()+5*mult);
-				calles.lca[i]->setPos(calles.lca[i]->getPos().x+5*mult/2,calles.lca[i]->getPos().y);	//ajustar la posicion de las calles de la misma columna
-			}
-			else if(calles.lca[i]->getPos().x>aux.x)
-				calles.lca[i]->setPos(calles.lca[i]->getPos().x+5*mult,calles.lca[i]->getPos().y);	//ajustar la posicion de las calles de la derecha
-		}
-		for(int i=0;i<coches.numero;i++){
-			if(coches.lco[i]->getPos().x>aux.x)
-				coches.lco[i]->setPos(coches.lco[i]->getPos().x+5*mult,coches.lco[i]->getPos().y);	//ajustar la posicion de los coches de la derecha
-		}
-		for(int i=0;i<semaforos.numero;i++){
-			if(semaforos.ls[i]->getPos().x>aux.x)
-				semaforos.ls[i]->setPos(semaforos.ls[i]->getPos().x+5*mult,semaforos.ls[i]->getPos().y);	//ajustar la posicion de los semaforos de la derecha
-		}
-	}
-	else if(calles.lca[indice]->direccion==0 &&!((calles.lca[indice]->getLong()<25&&mult<0)||(calles.lca[indice]->getLong()>50&&mult>0))){		//vertical
-		for(int i=0;i<calles.numero;i++){
-			if(calles.lca[i]->getPos().y==aux.y){
-				calles.lca[i]->setLong(calles.lca[i]->getLong()+5*mult);
-				calles.lca[i]->setPos(calles.lca[i]->getPos().x,calles.lca[i]->getPos().y+5*mult/2);	//ajustar la posicion de las calles de la misma columna
-			}
-			else if(calles.lca[i]->getPos().y>aux.y)
-				calles.lca[i]->setPos(calles.lca[i]->getPos().x,calles.lca[i]->getPos().y+5*mult);	//ajustar la posicion de las calles de la derecha
-		}
-		for(int i=0;i<coches.numero;i++){
-			if(coches.lco[i]->getPos().y>aux.y)
-				coches.lco[i]->setPos(coches.lco[i]->getPos().x,coches.lco[i]->getPos().y+5*mult);	//ajustar la posicion de los coches de la derecha
-		}
-		for(int i=0;i<semaforos.numero;i++){
-			if(semaforos.ls[i]->getPos().y>aux.y)
-				semaforos.ls[i]->setPos(semaforos.ls[i]->getPos().x,semaforos.ls[i]->getPos().y+5*mult);	//ajustar la posicion de los semaforos de la derecha
-		}
-	}
-	
+void Editor::changeLength(StreetList streets, CarList cars, TrafficlightList trafficlights, int mult) {
+  Vector2D aux = streets.streetList_[index_]->getPosition();
+  if (streets.streetList_[index_]->direction_ && !((streets.streetList_[index_]->getLength() < 25 && mult < 0) ||
+                                         (streets.streetList_[index_]->getLength() > 50 && mult > 0))) {  // horizontal
+    for (int i = 0; i < streets.number_; i++) {
+      if (streets.streetList_[i]->getPosition().x == aux.x) {
+        streets.streetList_[i]->setLength(streets.streetList_[i]->getLength() + 5 * mult);
+        streets.streetList_[i]->setPosition(streets.streetList_[i]->getPosition().x + 5 * mult / 2,
+                              streets.streetList_[i]->getPosition().y);  // Adjust street position of the same column
+      } else if (streets.streetList_[i]->getPosition().x > aux.x)
+        streets.streetList_[i]->setPosition(streets.streetList_[i]->getPosition().x + 5 * mult,
+                              streets.streetList_[i]->getPosition().y);  // Adjust right streets position
+    }
+    for (int i = 0; i < cars.number_; i++) {
+      if (cars.carList_[i]->getPosition().x > aux.x)
+        cars.carList_[i]->setPosition(cars.carList_[i]->getPosition().x + 5 * mult,
+                              cars.carList_[i]->getPosition().y);  // Adjust right cars position
+    }
+    for (int i = 0; i < trafficlights.number_; i++) {
+      if (trafficlights.trafficlightList_[i]->getPosition().x > aux.x)
+        trafficlights.trafficlightList_[i]->setPosition(trafficlights.trafficlightList_[i]->getPosition().x + 5 * mult,
+                                trafficlights.trafficlightList_[i]->getPosition().y);  // Adjust right trafficlights position
+    }
+  } else if (streets.streetList_[index_]->direction_ == 0 && !((streets.streetList_[index_]->getLength() < 25 && mult < 0) ||
+                                                     (streets.streetList_[index_]->getLength() > 50 && mult > 0))) {  // vertical
+    for (int i = 0; i < streets.number_; i++) {
+      if (streets.streetList_[i]->getPosition().y == aux.y) {
+        streets.streetList_[i]->setLength(streets.streetList_[i]->getLength() + 5 * mult);
+        streets.streetList_[i]->setPosition(
+            streets.streetList_[i]->getPosition().x,
+            streets.streetList_[i]->getPosition().y + 5 * mult / 2);  // Adjust street position of the same column
+      } else if (streets.streetList_[i]->getPosition().y > aux.y)
+        streets.streetList_[i]->setPosition(streets.streetList_[i]->getPosition().x,
+                              streets.streetList_[i]->getPosition().y + 5 * mult);  // Adjust right streets position
+    }
+    for (int i = 0; i < cars.number_; i++) {
+      if (cars.carList_[i]->getPosition().y > aux.y)
+        cars.carList_[i]->setPosition(cars.carList_[i]->getPosition().x,
+                              cars.carList_[i]->getPosition().y + 5 * mult);  // Adjust right cars position
+    }
+    for (int i = 0; i < trafficlights.number_; i++) {
+      if (trafficlights.trafficlightList_[i]->getPosition().y > aux.y)
+        trafficlights.trafficlightList_[i]->setPosition(
+            trafficlights.trafficlightList_[i]->getPosition().x,
+            trafficlights.trafficlightList_[i]->getPosition().y + 5 * mult);  // Adjust right trafficlights position
+    }
+  }
 }
 
-
-/*coches*/
-void editor::cambiarCantidad(int i, listaCoches lco, listaCalles lca){
-	listaCoches *plco=&lco;
-	if(i){
-		interaccion::crearcoche(plco, lca);
-		cout<<"\tse han creado nuevos coches, ahora hay "<<lco.numero<<" coches\n";
-	}
-	else{
-		interaccion::destruircoche(lco, 2);
-		cout<<"\tse han destruido coches, ahora hay "<<lco.numero<<" coches\n";
-	}
+/*cars*/
+void Editor::changeCarNumber(int i, CarList carList_, StreetList streetList) {
+  CarList* plco = &carList_;
+  if (i) {
+    Interaction::addCar(plco, streetList);
+    cout << "\tNew cars have been created, there are " << carList_.number_ << " cars now\n";
+  } else {
+    Interaction::deleteCar(carList_, 2);
+    cout << "\tCars have been deleted, there are " << carList_.number_ << " cars now\n";
+  }
 }
 
-
-/*semaforos*/
-void editor::cambiarColor(int i, listaSemaforos semaforos){
-	i+=semaforos.ls[indice]->getLuz();
-	if(i<0)					//evita estados inalcanzables
-		semaforos.ls[indice]->setLuz(3);
-	else if(i>3)
-		semaforos.ls[indice]->setLuz(0);
-	else
-		semaforos.ls[indice]->setLuz(i);
-	cout<<"se ha cambiado la luz del semaforo\t";
+/*trafficlights*/
+void Editor::changeTrafficlightState(int i, TrafficlightList trafficlights) {
+  i += trafficlights.trafficlightList_[index_]->getState();
+  if (i < 0)  // Avoid unreachable cases
+    trafficlights.trafficlightList_[index_]->setState(3);
+  else if (i > 3)
+    trafficlights.trafficlightList_[index_]->setState(0);
+  else
+    trafficlights.trafficlightList_[index_]->setState(i);
+  cout << "Trafficlight state has been changed\t";
 }
 
+/*world*/
+void Editor::changeMatrix() {}
 
-/*mundo*/
-void editor::cambiarMatriz(){
-
+/*helper*/
+bool Editor::reachEdge(int i, CarList carList, StreetList streetList, TrafficlightList trafficlightList) {
+  switch (object_) {
+    case 1:  // street
+      maxIndex_ = streetList.number_;
+      break;
+    case 2:  // car
+      maxIndex_ = carList.number_;
+      break;
+    case 3:  // trafficlight
+      maxIndex_ = trafficlightList.number_;
+      break;
+  }
+  if (index_ == (maxIndex_ - 1) && i == 1) {
+    index_ = 0;
+    return true;
+  } else if (index_ == 0 && i == -1) {
+    index_ = maxIndex_ - 1;
+    return true;
+  } else
+    return false;
 }
-
-
-/*auxiliar*/
-bool editor::alcanzarExtremo(int i, listaCoches lco, listaCalles lca, listaSemaforos ls){
-	switch(objeto){
-	case 1:	//calle
-		maxindice=lca.numero;
-	break;
-	case 2:	//coche
-		maxindice=lco.numero;
-	break;
-	case 3:	//semaforo
-		maxindice=ls.numero;
-	break;
-	}
-	if(indice==(maxindice-1) && i==1){
-		indice=0;
-		return true;
-	}
-	else if(indice==0 && i==-1){
-		indice=maxindice-1;
-		return true;
-	}
-	else return false;
-}
-
-
-
