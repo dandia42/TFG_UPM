@@ -14,11 +14,11 @@ class CarList {
   void setPosition(float, float);
   void move(float);
   bool add(Car*);
-  void destruirContenido();
+  void deleteContent();
   void deleteIndex(int);
-  void eliminar(Car*);
+  void deleteObject(Car*);
 
-  void setgiro(int);
+  void setTurn(int);
 
   friend class World;  // TODO por ahora
   friend class Interaction;
@@ -34,9 +34,9 @@ class StreetList {
   void draw();
   void setPosition(float, float);
   bool add(Street*);
-  void destruirContenido();
+  void deleteContent();
   void deleteIndex(int);
-  void eliminar(Street*);
+  void deleteObject(Street*);
 
   int getLength();
 
@@ -57,9 +57,9 @@ class TrafficlightList {
   // void onTimer(int);
   void setPosition(float, float);
   bool add(Trafficlight*);
-  void destruirContenido();
+  void deleteContent();
   void deleteIndex(int);
-  void eliminar(Trafficlight*);
+  void deleteObject(Trafficlight*);
 
   friend class Interaction;
   friend class Editor;

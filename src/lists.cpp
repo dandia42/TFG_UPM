@@ -1,6 +1,6 @@
 #pragma once
 #include "lists.h"
-// constructores
+// builders
 CarList::CarList() {
   number_ = 0;
   for (int i = 0; i < MAX_ELEM; i++) carList_[i] = 0;
@@ -14,14 +14,14 @@ TrafficlightList::TrafficlightList() {
   for (int i = 0; i < MAX_ELEM; i++) trafficlightList_[i] = 0;
 }
 
-// agregar
+// add
 bool CarList::add(Car* co) {
   for (int i = 0; i < number_; i++)
     if (carList_[i] == co) return false;
   if (number_ < MAX_ELEM)
     carList_[number_++] = co;
   else
-    return false;  // capacidad maxima alcanzada
+    return false;  // max number
   return true;
 }
 bool StreetList::add(Street* ca) {
@@ -30,7 +30,7 @@ bool StreetList::add(Street* ca) {
   if (number_ < MAX_ELEM)
     streetList_[number_++] = ca;
   else
-    return false;  // capacidad maxima alcanzada
+    return false;  // max number
   return true;
 }
 bool TrafficlightList::add(Trafficlight* s) {
@@ -40,11 +40,11 @@ bool TrafficlightList::add(Trafficlight* s) {
   if (number_ < MAX_ELEM)
     trafficlightList_[number_++] = s;
   else
-    return false;  // capacidad maxima alcanzada
+    return false;  // max number
   return true;
 }
 
-// dibuja
+// draw
 void CarList::draw() {
   for (int i = 0; i < number_; i++) carList_[i]->draw();
 }
@@ -55,7 +55,7 @@ void TrafficlightList::draw() {
   for (int i = 0; i < number_; i++) trafficlightList_[i]->draw();
 }
 
-// setPos
+// setPosition
 void CarList::setPosition(float px, float py) {
   for (int i = 0; i < number_; i++) carList_[i]->setPosition(px, py);
 }
@@ -75,21 +75,21 @@ void CarList::move(float t) {
                 trafficlightList_[i]->onTimer(opt);
 }*/
 
-// destruir contenido
-void CarList::destruirContenido() {
+// delete content
+void CarList::deleteContent() {
   for (int i = 0; i < number_; i++) delete carList_[i];
   number_ = 0;
 }
-void StreetList::destruirContenido() {
+void StreetList::deleteContent() {
   for (int i = 0; i < number_; i++) delete streetList_[i];
   number_ = 0;
 }
-void TrafficlightList::destruirContenido() {
+void TrafficlightList::deleteContent() {
   for (int i = 0; i < number_; i++) delete trafficlightList_[i];
   number_ = 0;
 }
 
-// eliminar index
+// deleteObject index
 void CarList::deleteIndex(int index) {
   if ((index < 0) || (index >= number_)) return;
   delete carList_[index];
@@ -109,31 +109,31 @@ void TrafficlightList::deleteIndex(int index) {
   for (int i = index; i < number_; i++) trafficlightList_[i] = trafficlightList_[i + 1];
 }
 
-// eliminar
-void CarList::eliminar(Car* dco) {
+// deleteObject
+void CarList::deleteObject(Car* deleteCar) {
   for (int i = 0; i < number_; i++)
-    if (carList_[i] == dco) {
+    if (carList_[i] == deleteCar) {
       deleteIndex(i);
       return;
     }
 }
-void StreetList::eliminar(Street* dca) {
+void StreetList::deleteObject(Street* deleteStreet) {
   for (int i = 0; i < number_; i++)
-    if (streetList_[i] == dca) {
+    if (streetList_[i] == deleteStreet) {
       deleteIndex(i);
       return;
     }
 }
-void TrafficlightList::eliminar(Trafficlight* ds) {
+void TrafficlightList::deleteObject(Trafficlight* deleteTrafficlight) {
   for (int i = 0; i < number_; i++)
-    if (trafficlightList_[i] == ds) {
+    if (trafficlightList_[i] == deleteTrafficlight) {
       deleteIndex(i);
       return;
     }
 }
 
-void CarList::setgiro(int g_) {
-  for (int i = 0; i < number_; i++) carList_[i]->setTurn(g_);
+void CarList::setTurn(int turn) {
+  for (int i = 0; i < number_; i++) carList_[i]->setTurn(turn);
 }
 int StreetList::getLength() {
   return streetList_[0]->getLength();

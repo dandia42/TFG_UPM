@@ -46,10 +46,10 @@ class World {
 
   double time_;
 
-  Street* auxiliarStreet_ = new Street({-10, -10}, 0);
+  Street* auxiliarStreet_ = nullptr;
   CarList cars_, *pCars_ = &cars_;
   StreetList streets_, *pStreets_ = &streets_;
   TrafficlightList trafficlights_, *pTrafficlights_ = &trafficlights_;
-  Graph graph_, *pGraph_ = &graph_, *trafficlightGraph_ = &graph_;  // route graph, traffic light graph
+  Graph graph_, *pGraph_ = nullptr, *trafficlightGraph_ = nullptr;  // route graph, traffic light graph
   // editor editor_;
 };

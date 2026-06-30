@@ -33,11 +33,16 @@ void World::worldGeneration(int rows_, int columns_) {
 }
 
 World::World() {
+  auxiliarStreet_ = new Street({-10, -10}, 0);
   // init();
 }
 
 World::~World() {
   delete[] trafficlightGraph_;
+  delete auxiliarStreet_;
+  cars_.deleteContent();
+  streets_.deleteContent();
+  trafficlights_.deleteContent();
 }
 
 void World::init() {
@@ -93,6 +98,10 @@ void World::init() {
       }
       Interaction::setRoute(cars_, pGraph_, streets_, routeOptimization_);
     }
+  }
+  if (trafficlightGraph_ != nullptr) {
+    delete[] trafficlightGraph_;
+    trafficlightGraph_ = nullptr;
   }
   while (trafficlightOptimization_< 0) {
     cout << "\nTraffic lights:\n\t0) None\n\t1) Local\n\t2) General\n\t\t";

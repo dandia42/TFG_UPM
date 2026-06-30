@@ -18,6 +18,7 @@ Car::Car(Vector2D p, int d) {
 
 Car::~Car() {
   cout << "\nDelete car";
+  delete[] route_;
 }
 
 void Car::draw() {

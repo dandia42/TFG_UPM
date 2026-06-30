@@ -166,7 +166,7 @@ void Algorithm::greenWave(Graph* graph, int*& streetlightRoute, int& streetlight
       ini3 = rand() % graph->nNodes_;         // using the initial graph, not the congugated
   bool aux1 = true;                         // flag to obtain ini3 that does not repeat
   int n1 = 0, n2 = 0, n3 = 0;               // nodes number in each route
-  int route = 0, *r1 = &route, *r2 = &route, *r3 = &route;  // 3 routes
+  int route = 0, *r1 = nullptr, *r2 = nullptr, *r3 = nullptr;  // 3 routes
   int *streets, *streets1, *streets2, *streets3;
 
   while (ini1 == ini2)  // avoid initial nodes repetition
@@ -190,39 +190,125 @@ void Algorithm::greenWave(Graph* graph, int*& streetlightRoute, int& streetlight
 
   DOUT << "\n\tRoute information: n1: " << n1 << ", n2: " << n2 << ", n3: " << n3 << ", initial nodes: " << ini1 << ", "
        << ini2 << ", " << ini3 << endl;
-  DOUT << "\n\t\tRoute 1: " << endl;
-  for (int i = 0; i < n1; i++) DOUT << r1[i] << " ";
-  DOUT << "\n\t\tRoute 2: " << endl;
-  for (int i = 0; i < n2; i++) DOUT << r2[i] << " ";
-  DOUT << "\n\t\tRoute 3: " << endl;
-  for (int i = 0; i < n3; i++) DOUT << r3[i] << " ";
 
-  // merge 3 routes
-  streetlightNumber = n1 + n2 + n3;
+  DOUT << "\n\t\tRoute 1: " << endl;
+  for (int i = 0; i < n1; ++i) 
+    DOUT << r1[i] << " ";
+
+  DOUT << "\n\t\tRoute 2: " << endl;
+  for (int i = 0; i < n2; ++i) 
+    DOUT << r2[i] << " ";
+
+  DOUT << "\n\t\tRoute 3: " << endl;
+  for (int i = 0; i < n3; ++i) 
+    DOUT << r3[i] << " ";
+
+
+
+
+
+
+
+
+
+  // ----- Ruta completa de nodos -----
+  DOUT << "\n\t\tRoute completed: " << endl;
+  // Ruta 1 completa
+  for (int i = 0; i < n1; ++i) DOUT << r1[i] << " ";
+  // Ruta 2 desde el segundo nodo
+  for (int i = 1; i < n2; ++i) DOUT << r2[i] << " ";
+  // Ruta 3 desde el segundo nodo
+  for (int i = 1; i < n3; ++i) DOUT << r3[i] << " ";
+  DOUT << endl;
+
+  // ----- Calles usadas (ciclo completo) -----
+  std::vector<int> streetsUsed;
+
+  // 1) Calles internas de ruta 1
+  for (int i = 0; i < n1 - 1; ++i) {
+    streetsUsed.push_back(streets1[i]);  // (r1[i], r1[i+1]) -> (11,9)
+  }
+
+  // 2) Calle entre fin de ruta 1 y inicio de ruta 2: (r1[n1-1], r2[0]) -> (9,6)
+  auto findStreet = [&](int a, int b) -> int {
+    for (int j = 0; j < graph->nLinks_; ++j) {
+      int o = graph->link_[j].getOrigin();
+      int d = graph->link_[j].getDestination();
+      if ((o == a && d == b) || (o == b && d == a)) {
+        return graph->link_[j].getIndex();
+      }
+    }
+    return -1;
+  };
+
+  int s = findStreet(r1[n1 - 1], r2[0]);
+  streetsUsed.push_back(s);
+
+  // 3) Calles internas de ruta 2: (6,3), (3,5)
+  for (int i = 0; i < n2 - 1; ++i) {
+    streetsUsed.push_back(streets2[i]);
+  }
+
+  // 4) Calle entre fin de ruta 2 y inicio de ruta 3: (r2[n2-1], r3[0]) -> (5,4)
+  s = findStreet(r2[n2 - 1], r3[0]);
+  streetsUsed.push_back(s);
+
+  // 5) Calles internas de ruta 3: (4,7), (7,8)
+  for (int i = 0; i < n3 - 1; ++i) {
+    streetsUsed.push_back(streets3[i]);
+  }
+
+  // 6) Calle entre fin de ruta 3 y inicio de ruta 1: (r3[n3-1], r1[0]) -> (8,11)
+  s = findStreet(r3[n3 - 1], r1[0]);
+  streetsUsed.push_back(s);
+
+  // Ahora ya tienes exactamente 8 calles en el ejemplo
+  streetlightNumber = static_cast<int>(streetsUsed.size());
   streetlightRoute = new int[streetlightNumber];
   streets = new int[streetlightNumber];
-  int index = 0;
-  for (int i = 0; i < n1; i++) {
-    streetlightRoute[index] = r1[i];
-    streets[index++] = streets1[i];
-  }
-  for (int i = 0; i < n2; i++) {
-    streetlightRoute[index] = r2[i];
-    streets[index++] = streets2[i];
-  }
-  for (int i = 0; i < n3; i++) {
-    streetlightRoute[index] = r3[i];
-    streets[index++] = streets3[i];
+
+  // streetlightRoute: nodos destino de cada calle del ciclo
+  // (11,9) -> 9, (9,6) -> 6, (6,3) -> 3, ..., (8,11) -> 11
+  int currentNode = r1[0];  // 11
+  for (int i = 0; i < streetlightNumber; ++i) {
+    streets[i] = streetsUsed[i];
+
+    // deducir nodo destino a partir de la calle y el nodo actual
+    int idx = streetsUsed[i];
+    if (idx >= 0 && idx < graph->nLinks_) {
+      int o = graph->link_[idx].getOrigin();
+      int d = graph->link_[idx].getDestination();
+      int nextNode = (o == currentNode) ? d : (d == currentNode ? o : -1);
+      streetlightRoute[i] = nextNode;
+      currentNode = (nextNode != -1 ? nextNode : currentNode);
+    } else {
+      streetlightRoute[i] = -1;
+    }
   }
 
-  DOUT << "\n\t\tRoute completed: " << endl;
-  for (int i = 0; i < streetlightNumber; i++) DOUT << streetlightRoute[i] << " ";
-
+  // Debug
   DOUT << "\n\t\tStreets used: " << endl;
-  for (int i = 0; i < streetlightNumber; i++) {
+  for (int i = 0; i < streetlightNumber; ++i) {
     DOUT << streets[i] << " ";
-    streetList.streetList_[streets[i]]->setColor(1, 0, 1);
   }
+  DOUT << endl;
+
+  // Aplicar color solo a índices válidos
+  for (int i = 0; i < streetlightNumber; ++i) {
+    if (streets[i] >= 0 && streets[i] < streetList.number_) {
+      streetList.streetList_[streets[i]]->setColor(1, 0, 1);
+    } else {
+      DOUT << "\n[WARN] Invalid street index in greenWave: " << streets[i] << endl;
+    }
+  }
+
+  // Liberar solo lo que viene de auxFunction
+  delete[] r1;
+  delete[] r2;
+  delete[] r3;
+  delete[] streets1;
+  delete[] streets2;
+  delete[] streets3;
 
   cin >> n1;  // TODO borrar esto cuando se compruebe que esta bien
 
@@ -280,7 +366,7 @@ void Algorithm::greenWave(Graph* graph, int*& streetlightRoute, int& streetlight
   */
 }
 
-void Algorithm::auxFunction(int inia, int inib, Graph*& graph, int& n, int*& route, int*& streets_) {
+void Algorithm::auxFunction(int inia, int inib, Graph*& graph, int& n, int*& route, int*& streets) {
   DOUT << "****************************************************************************" << endl;
   dijkstra(inia, graph, true);  // Find best route from node a to each other node
   DOUT << "****************************************************************************" << endl;
@@ -289,21 +375,50 @@ void Algorithm::auxFunction(int inia, int inib, Graph*& graph, int& n, int*& rou
   int aux = inib;
   n = graph->node_[inib].dijkstraVariable_.getIteration();
   route = new int[n];  // array to save first route
-  streets_ = new int[n];
 
   for (int i = n - 1; i >= 0; i--) {
     route[i] = graph->node_[aux].dijkstraVariable_.getID();
     aux = graph->node_[aux].dijkstraVariable_.getID();
   }
+
+
+  int m = (n > 0) ? n - 1 : 0;
+  streets = new int[m];
+  for (int i = 0; i < m; ++i) {
+    int a = route[i];
+    int b = route[i + 1];
+    bool found = false;
+
+    for (int j = 0; j < graph->nLinks_; ++j) {
+      int o = graph->link_[j].getOrigin();
+      int d = graph->link_[j].getDestination();
+
+      if ((o == a && d == b) || (o == b && d == a)) {
+        graph->link_[j].setVariableWeight(1000);
+        streets[i] = graph->link_[j].getIndex();
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      // Fallback seguro: marca como inválido
+      streets[i] = -1;
+    }
+  }
+  
+  
+  
+  
   // TODO aqui igual hay que aumentar el peso de las aristas que conectan los vertices de la route_ para que no se repitan
   // vertices, luego habria que bajar el peso para que se usen en setRuta
-  for (int i = 0; i < n; i++) {
+  /*for (int i = 0; i < n; i++) {
     if (i < (n - 1))  // first index of partial route
       for (int j = 0; j < graph->nLinks_; j++) {
         if (graph->link_[j].getOrigin() == route[i]) {  // if previous or next node is in the route, 
                                                         //link weight is increased to exclude it from the next route
           graph->link_[j].setVariableWeight(1000);
-          streets_[i] = graph->link_[j].getIndex();
+          streets[i] = graph->link_[j].getIndex();
         }
         if (graph->link_[j].getDestination() == route[i]) graph->link_[j].setVariableWeight(1000);
       }
@@ -313,10 +428,10 @@ void Algorithm::auxFunction(int inia, int inib, Graph*& graph, int& n, int*& rou
             route[i]) {  // just the origin, if previous or next node is in the route, 
                          //link weight is increased to exclude it from the next route
           graph->link_[j].setVariableWeight(1000);
-          streets_[i] = graph->link_[j].getIndex();
+          streets[i] = graph->link_[j].getIndex();
         }
       }
-  }
+  }*/
   DOUT << "\n\t\t***** Exit route auxFunction *****";
-  for (int i = 0; i < n; i++) DOUT << "\t" << route[i] << endl;
+  for (int i = 0; i < n; ++i) DOUT << "\t" << route[i] << endl;
 }

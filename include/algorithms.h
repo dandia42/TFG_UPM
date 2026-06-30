@@ -1,6 +1,7 @@
 #pragma once
 #include "debug.h"
 #include "graph.h"
+#include "vector"
 
 class Algorithm {
  public:

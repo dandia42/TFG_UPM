@@ -1702,7 +1702,7 @@ void Interaction::onTimerSem(StreetList& streetList, CarList& carList, Trafficli
     }
   }
   for (int i = 0; i < trafficlightList.number_; i++)
-    onTimerSem(streetList,carList,trafficlightList.trafficlightList_[i],opt,&trafficlightGraph[i],flagaux,i);
+    //onTimerSem(streetList,carList,trafficlightList.trafficlightList_[i],opt,&trafficlightGraph[i],flagaux,i);
     flagaux = true;  // to assign times just the first time
 
   //DOUT << "\n\t[DEBUG] - Exit general onTimerSem" << endl;
